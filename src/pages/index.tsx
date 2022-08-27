@@ -1,11 +1,13 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+import { Menu } from '../components/Menu'
+
 
 const Home: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>Plus</title>
+        <title>Plus | Dashboard</title>
         <meta name="Plus" content="Melhore seu gerenciamento financeiro" />
 
         {/* Favicon */}
@@ -15,6 +17,8 @@ const Home: NextPage = () => {
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"/>
         <link rel="manifest" href="/site.webmanifest"/>
       </Head>
+
+      <Menu />
 
      
     </div>
