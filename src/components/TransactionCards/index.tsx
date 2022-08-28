@@ -3,7 +3,7 @@ import { Heading, Text, VStack } from "@chakra-ui/react";
 
 export function TransactionCard() {
     return(
-        <VStack spacing={6} align="flex-start">
+        <VStack spacing={6} align={["center","flex-start"]}>
             <VStack
                 spacing={0}
                 bgColor="brand.orange-500"
