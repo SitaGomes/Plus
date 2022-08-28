@@ -23,7 +23,7 @@ export function DesktopMenu(){
 
                     </HStack>
                     <HStack>
-                        <VStack align="flex-end" justify="center">
+                        <VStack align="flex-end" justify="center" spacing={0} pr={3}>
                             <Text fontWeight="medium">Jão pessoa</Text>
                             <Text fontSize="sm">Joaopessoa@gmail.com</Text>
                         </VStack>
