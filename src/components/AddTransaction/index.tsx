@@ -20,7 +20,7 @@ export function AddTransaction(){
                         pointerEvents='none'
                         color='gray.300'
                         fontSize='1.2em'
-                        >$</InputLeftElement>
+                        >R$</InputLeftElement>
                         <Input variant='filled' type="number" placeholder='Preço' />
                     </InputGroup>
 
