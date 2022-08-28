@@ -5,6 +5,7 @@ import Head from 'next/head'
 import { AddTransaction } from '../components/AddTransaction'
 import { Menu } from '../components/Menu'
 import { Container } from '@chakra-ui/react'
+import { TransactionCard } from '../components/TransactionCards'
 
 
 const Home: NextPage = () => {
@@ -26,6 +27,10 @@ const Home: NextPage = () => {
 
       <Container maxW="1100px">
         <AddTransaction />
+
+        <TransactionCard />
+
+
       </Container>
 
      
