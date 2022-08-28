@@ -5,7 +5,7 @@ import { Header } from "./TransactionHeader";
 
 export function AddTransaction(){
     return(
-        <Box my={5} borderRadius="20px" bg="brand.white-900">
+        <Box mt={5} borderRadius="20px" bg="brand.white-900">
             <HStack spacing={0} align="center" justifyContent="space-around">
                 <Header>DESPESA</Header>
                 <Header inverted>RECEITA</Header>
