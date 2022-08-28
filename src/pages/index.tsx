@@ -4,8 +4,9 @@ import Head from 'next/head'
 //* Components
 import { AddTransaction } from '../components/AddTransaction'
 import { Menu } from '../components/Menu'
-import { Container } from '@chakra-ui/react'
+import { Box, Container, HStack } from '@chakra-ui/react'
 import { TransactionCard } from '../components/TransactionCards'
+import { TransactionTable } from '../components/TransactionTable'
 
 
 const Home: NextPage = () => {
@@ -28,7 +29,15 @@ const Home: NextPage = () => {
       <Container maxW="1100px">
         <AddTransaction />
 
-        <TransactionCard />
+
+        <HStack mt={5} gap={5} flexWrap="wrap" justify={["center", "center","flex-start"]}>
+          <TransactionCard />
+
+          <Box w={["100%", 500]} flex="1">
+            <TransactionTable />
+          </Box>
+
+        </HStack>
 
 
       </Container>
