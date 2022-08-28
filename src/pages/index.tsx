@@ -1,6 +1,10 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
+
+//* Components
+import { AddTransaction } from '../components/AddTransaction'
 import { Menu } from '../components/Menu'
+import { Container } from '@chakra-ui/react'
 
 
 const Home: NextPage = () => {
@@ -19,6 +23,10 @@ const Home: NextPage = () => {
       </Head>
 
       <Menu />
+
+      <Container maxW="1100px">
+        <AddTransaction />
+      </Container>
 
      
     </div>
