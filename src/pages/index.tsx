@@ -1,4 +1,4 @@
-import { Box, Button, Container, Divider, Flex, HStack, Image, Stack, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Container, Divider, Flex, HStack, Image, Stack, Text, useBreakpointValue, VStack } from "@chakra-ui/react";
 import { NextPage } from "next";
 import Head from 'next/head'
 import { EmailInput } from "../components/SingIn/EmailInput";
@@ -6,6 +6,14 @@ import { PasswordInput } from "../components/SingIn/PasswordInput";
 
 
 const SingIn: NextPage = () => {
+
+
+    const isMobileView = useBreakpointValue({
+        base: true,
+        lg: false,
+    })
+
+
     return(
         <>
             <Head>
@@ -30,12 +38,17 @@ const SingIn: NextPage = () => {
                             </Text>
                             <EmailInput />
                             <PasswordInput />
-                                
+                            <Button w="100%" colorScheme="whatsapp" color="brand.white-900">
+                                <Text fontWeight="medium" fontSize="lg">
+                                    Login
+                                </Text>
+                            </Button>
+
                                 <Divider orientation='horizontal' />
-                                <Text fontWeight="medium" fontSize="lg">ou</Text>
+                                <Text py={6} fontWeight="medium" fontSize="lg">ou</Text>
                                 <Divider orientation='horizontal' />
 
-                            <Button w="100%" bgColor="brand.orange-500" color="brand.white-900">
+                            <Button w="100%" colorScheme="red" color="brand.white-900">
                                 <Text fontWeight="medium" fontSize="lg">
                                     Google
                                 </Text>
@@ -44,9 +57,10 @@ const SingIn: NextPage = () => {
                     </VStack>
                 </Container>
 
-                <Image flex="1" h="100%" src="/images/Banner.png" alt="Adicione lucro a sua vida" />
+                {!isMobileView && (
+                    <Image flex="1" h="100%" src="/images/Banner.png" alt="Adicione lucro a sua vida" />
+                )}
             </HStack>
-
 
         </>
     )
