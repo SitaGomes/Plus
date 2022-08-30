@@ -6,7 +6,7 @@ import { EmailInput } from "../components/SingIn/EmailInput";
 import { PasswordInput } from "../components/SingIn/PasswordInput";
 
 
-const SingIn: NextPage = () => {
+const SingUp: NextPage = () => {
 
 
     const isMobileView = useBreakpointValue({
@@ -35,28 +35,23 @@ const SingIn: NextPage = () => {
                     <VStack h="100%" color="brand.black-700" justify="center" >
                             <Image src="/images/Logo_Slogan.png" alt="Plus - Adicionando lucro a sua vida" />
                             <Text fontWeight="medium" fontSize="lg" py={6}>
-                                Faça login na sua conta PLUS, com email:
+                                Crie uma conta PLUS.
                             </Text>
-                            <EmailInput />
-                            <PasswordInput />
+
+                                <EmailInput />
+                                <PasswordInput />
+                                <PasswordInput />
+
                             <Button w="100%" colorScheme="whatsapp" color="brand.white-900">
                                 <Text fontWeight="medium" fontSize="lg">
-                                    Login
+                                    Criar conta
                                 </Text>
                             </Button>
-                            <NextLink href="/singup">
-                                <Link color="brand.orange-500" fontSize="sm">Crie uma conta PLUS</Link>
+                            <NextLink href="/">
+                                <Link color="brand.orange-500" fontSize="sm">
+                                    Entre na sua conta PLUS
+                                </Link>
                             </NextLink>
-
-                                <Divider orientation='horizontal' />
-                                <Text py={6} fontWeight="medium" fontSize="lg">ou</Text>
-                                <Divider orientation='horizontal' />
-
-                            <Button w="100%" colorScheme="red" color="brand.white-900">
-                                <Text fontWeight="medium" fontSize="lg">
-                                    Google
-                                </Text>
-                            </Button>
 
                     </VStack>
                 </Container>
@@ -70,4 +65,4 @@ const SingIn: NextPage = () => {
     )
 }
 
-export default SingIn
+export default SingUp
