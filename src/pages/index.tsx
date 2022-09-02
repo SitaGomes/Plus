@@ -1,12 +1,31 @@
-import { Box, Button, Container, Divider, Link, Flex, HStack, Image, Stack, Text, useBreakpointValue, VStack } from "@chakra-ui/react";
 import { NextPage } from "next";
 import NextLink from "next/link";
 import Head from 'next/head'
+import { useSession, signIn } from "next-auth/react"
+
+import toast from "react-hot-toast";
+
 import { EmailInput } from "../components/SingIn/EmailInput";
 import { PasswordInput } from "../components/SingIn/PasswordInput";
 
+import {  Button, Container, Divider, Link, HStack, Image, Text, useBreakpointValue, VStack, FormControl, Input } from "@chakra-ui/react";
+import { Toaster } from "../components/Toaster";
+
 
 const SingIn: NextPage = () => {
+
+    const { data: session, status } = useSession();
+
+    async function handleGoogleSingIn() {
+        try {
+            await signIn("google", {callbackUrl: 'http://localhost:3000/dashboard', redirect: false})
+            toast.success("Login bem sucedido") 
+                
+        } catch (err) {
+            toast.error("Error na realização do login, tente mais tarde.")
+        }
+
+    }
 
 
     const isMobileView = useBreakpointValue({
@@ -29,10 +48,11 @@ const SingIn: NextPage = () => {
                 <link rel="manifest" href="/site.webmanifest"/>
                 <meta name="viewport" content="initial-scale=1, width=device-width" />
             </Head>
+            <Toaster />
 
             <HStack justify="space-between" bgColor="brand.white-900" h="100vh">
                 <Container >
-                    <VStack h="100%" color="brand.black-700" justify="center" >
+                    <VStack h="100%" color="brand.black-700" justify="center">
                             <Image src="/images/Logo_Slogan.png" alt="Plus - Adicionando lucro a sua vida" />
                             <Text fontWeight="medium" fontSize="lg" py={6}>
                                 Faça login na sua conta PLUS, com email:
@@ -52,7 +72,13 @@ const SingIn: NextPage = () => {
                                 <Text py={6} fontWeight="medium" fontSize="lg">ou</Text>
                                 <Divider orientation='horizontal' />
 
-                            <Button w="100%" colorScheme="red" color="brand.white-900">
+
+                            <Button
+                                w="100%"
+                                colorScheme="red"
+                                color="brand.white-900"
+                                onClick={handleGoogleSingIn}           
+                            >
                                 <Text fontWeight="medium" fontSize="lg">
                                     Google
                                 </Text>
@@ -61,9 +87,7 @@ const SingIn: NextPage = () => {
                     </VStack>
                 </Container>
 
-                {!isMobileView && (
-                    <Image flex="1" h="100%" src="/images/Banner.png" alt="Adicione lucro a sua vida" />
-                )}
+                {!isMobileView && <Image flex="1" h="100%" src="/images/Banner.png" alt="Adicione lucro a sua vida" />}
             </HStack>
 
         </>
