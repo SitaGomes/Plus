@@ -2,25 +2,29 @@ import { NextPage } from "next";
 import NextLink from "next/link";
 import Head from 'next/head'
 import { useSession, signIn } from "next-auth/react"
+import Router from "next/router";
+import { useEffect, useState } from "react";
 
 import toast from "react-hot-toast";
 
 import { EmailInput } from "../components/SingIn/EmailInput";
 import { PasswordInput } from "../components/SingIn/PasswordInput";
+import { Toaster } from "../components/Toaster";
 
 import {  Button, Container, Divider, Link, HStack, Image, Text, useBreakpointValue, VStack, FormControl, Input } from "@chakra-ui/react";
-import { Toaster } from "../components/Toaster";
 
 
 const SingIn: NextPage = () => {
 
     const { data: session, status } = useSession();
 
+    console.log(session)
+
+
     async function handleGoogleSingIn() {
         try {
-            await signIn("google", {callbackUrl: 'http://localhost:3000/dashboard', redirect: false})
+            await signIn("google", {callbackUrl: "/dashboard", redirect: false})
             toast.success("Login bem sucedido") 
-                
         } catch (err) {
             toast.error("Error na realização do login, tente mais tarde.")
         }
