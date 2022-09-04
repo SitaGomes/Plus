@@ -8,8 +8,14 @@ import { Box, Container, HStack } from '@chakra-ui/react'
 import { TransactionCard } from '../components/TransactionCards'
 import { TransactionTable } from '../components/TransactionTable'
 
+import {useSession} from "next-auth/react"
 
 const Dashboard: NextPage = () => {
+
+  const { data: session } = useSession()
+
+
+
   return (
     <>
       <Head>
