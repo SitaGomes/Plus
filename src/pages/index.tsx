@@ -18,8 +18,6 @@ const SingIn: NextPage = () => {
 
     const { data: session, status } = useSession();
 
-    console.log(session)
-
 
     async function handleGoogleSingIn() {
         try {
