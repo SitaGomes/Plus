@@ -1,9 +1,31 @@
-import { Box, Button, Container, Divider, Link, Flex, HStack, Image, Stack, Text, useBreakpointValue, VStack } from "@chakra-ui/react";
 import { NextPage } from "next";
 import NextLink from "next/link";
 import Head from 'next/head'
-import { EmailInput } from "../components/SingIn/EmailInput";
-import { PasswordInput } from "../components/SingIn/PasswordInput";
+
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../utils/firebase";
+
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
+
+import { Button, Container, Link, HStack, Image, Text, useBreakpointValue, VStack, FormControl, } from "@chakra-ui/react";
+
+import { Input } from "../components/SingIn/Input";
+
+interface ISingIn {
+    email: string,
+    password: string,
+    password_confirmation: string,
+}
+  
+const singInSchema = yup.object().shape({
+    email: yup.string().required("E-mail Obrigatório").email("E-mail inválido"),
+    password: yup.string().required("Senha Obrigatória").min(6),
+    password_confirmation: yup.string().oneOf([
+        null, yup.ref("password")
+    ], "As senhas precisam ser iguais"),
+})
 
 
 const SingUp: NextPage = () => {
@@ -13,6 +35,23 @@ const SingUp: NextPage = () => {
         base: true,
         lg: false,
     })
+
+
+    const {register, handleSubmit, formState} = useForm<ISingIn>({resolver: yupResolver(singInSchema)})  
+    const {errors} = formState
+
+    const handleSingIn: SubmitHandler<ISingIn> = async ({email, password}) => {
+        try {
+
+            const user = await createUserWithEmailAndPassword(auth, email, password)
+
+            console.log(user)
+        } catch(err) {
+            console.log(err)
+        }
+
+    }
+
 
 
     return(
@@ -32,26 +71,57 @@ const SingUp: NextPage = () => {
 
             <HStack justify="space-between" bgColor="brand.white-900" h="100vh">
                 <Container >
-                    <VStack h="100%" color="brand.black-700" justify="center" >
-                            <Image src="/images/Logo_Slogan.png" alt="Plus - Adicionando lucro a sua vida" />
-                            <Text fontWeight="medium" fontSize="lg" py={6}>
-                                Crie uma conta PLUS.
-                            </Text>
+                    <VStack
+                      h="100%"
+                      color="brand.black-700"
+                      justify="center"
+                      >
+                        <Image src="/images/Logo_Slogan.png" alt="Plus - Adicionando lucro a sua vida" />
+                        <Text fontWeight="medium" fontSize="lg" py={6}>
+                            Crie uma conta PLUS.
+                        </Text>
 
-                                <EmailInput />
-                                <PasswordInput />
-                                <PasswordInput />
+                        <VStack gap={3} w="100%" as="form" onSubmit={handleSubmit(handleSingIn)}>
 
-                            <Button w="100%" colorScheme="whatsapp" color="brand.white-900">
+                            <Input
+                                {...register("email")}
+                                name="email"
+                                type="email"
+                                label="Email"
+                                error={errors.email}
+                            />
+
+                            <Input
+                                {...register("password")}
+                                password
+                                name="password"
+                                label="Senha"
+                                error={errors.password}
+                            />
+
+                            <Input
+                                {...register("password_confirmation")}
+                                password
+                                name="password_confirmation"
+                                label="Confirmação da Senha"
+                                error={errors.password_confirmation} 
+                            />
+
+
+                            <Button w="100%" colorScheme="whatsapp" color="brand.white-900" type="submit">
                                 <Text fontWeight="medium" fontSize="lg">
                                     Criar conta
                                 </Text>
                             </Button>
-                            <NextLink href="/">
-                                <Link color="brand.orange-500" fontSize="sm">
-                                    Entre na sua conta PLUS
-                                </Link>
-                            </NextLink>
+
+                        </VStack>
+
+
+                        <NextLink href="/">
+                            <Link color="brand.orange-500" fontSize="sm">
+                                Entre na sua conta PLUS
+                            </Link>
+                        </NextLink>
 
                     </VStack>
                 </Container>
