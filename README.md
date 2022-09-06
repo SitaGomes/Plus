@@ -10,8 +10,21 @@
 
 </div>
 
+## :gear: **Technologies**  
 
-## :computer: Instalation
+* [NextJS](https://nextjs.org/)
+* [ChakraUI](https://chakra-ui.com/)
+* [TypeScript](https://www.typescriptlang.org/)
+* [Firebase](https://firebase.com/)
+* [Next-Auth](https://next-auth.js.org/)
+* [Yup](https://www.npmjs.com/package/yup)
+* [React-Hot-Toast](https://react-hot-toast.com/)
+* [React-Hook-Form](https://react-hook-form.com/)
+* [React-Icons](https://react-icons.github.io/react-icons/)
+* [Framer-Motion](https://www.framer.com/)
+
+
+## :computer: **Instalation**
 
 ```bash
 // First clone the repository
