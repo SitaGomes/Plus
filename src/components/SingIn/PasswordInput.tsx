@@ -2,8 +2,8 @@ import { Button, Input, InputGroup, InputRightElement } from "@chakra-ui/react"
 import { useState } from "react"
 
 export function PasswordInput() {
-    const [show, setShow] = useState(false)
-    const handleClick = () => setShow(!show)
+  const [show, setShow] = useState(false)
+  const handleClick = () => setShow(!show)
   
     return (
       <InputGroup size='md'>

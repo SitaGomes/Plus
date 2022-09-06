@@ -1,34 +1,71 @@
 import { NextPage } from "next";
 import NextLink from "next/link";
 import Head from 'next/head'
-import { useSession, signIn } from "next-auth/react"
+import { signIn } from "next-auth/react"
 import Router from "next/router";
-import { useEffect, useState } from "react";
+
+import { signInWithEmailAndPassword } from "firebase/auth";
+import {auth} from "../utils/firebase"
+
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
 
 import toast from "react-hot-toast";
 
-import { EmailInput } from "../components/SingIn/EmailInput";
-import { PasswordInput } from "../components/SingIn/PasswordInput";
+import {  Button, Container, Divider, Link, HStack, Image, Text, useBreakpointValue, VStack, } from "@chakra-ui/react";
+import { Input } from "../components/SingIn/Input";
 import { Toaster } from "../components/Toaster";
 
-import {  Button, Container, Divider, Link, HStack, Image, Text, useBreakpointValue, VStack, FormControl, Input } from "@chakra-ui/react";
+interface ISingIn {
+    email: string,
+    password: string,
+}
 
+const singInSchema = yup.object().shape({
+    email: yup.string().required("E-mail Obrigatório").email("E-mail inválido"),
+    password: yup.string().required("Senha Obrigatória").min(6),
+})
 
 const SingIn: NextPage = () => {
 
-    const { data: session, status } = useSession();
+    
+    const {register, handleSubmit, formState} = useForm<ISingIn>({resolver: yupResolver(singInSchema)})
+    const {errors} = formState
 
-
-    async function handleGoogleSingIn() {
+    const handleEmailSingIn: SubmitHandler<ISingIn> = async ({email, password}) => {
         try {
-            await signIn("google", {callbackUrl: "/dashboard", redirect: false})
-            toast.success("Login bem sucedido") 
-        } catch (err) {
-            toast.error("Error na realização do login, tente mais tarde.")
+            const {user} = await signInWithEmailAndPassword(auth, email, password)
+            console.log(user)
+
+            toast.success("Login feito com sucesso!")
+            Router.push("/dashboard")
+        } catch(err) {
+            const error = err as Error
+
+            if (error.message === "Firebase: Error (auth/wrong-password)."){
+                return toast.error("Senha errada")
+            }
+
+            if (error.message === "Firebase: Error (auth/user-not-found).") {
+                return toast.error("Usuário não existe")
+            }
+
+            toast.error(error.message)
         }
 
     }
 
+    const handleGoogleSingIn = async () => {
+        try {
+            await signIn("google", {callbackUrl: "/dashboard", redirect: false})
+            toast.success("Login com o google bem sucedido!") 
+
+        } catch (err) {
+            toast.error("Error no login com o Google. Por favor tente mais tarde.")
+        }
+
+    }
 
     const isMobileView = useBreakpointValue({
         base: true,
@@ -59,13 +96,32 @@ const SingIn: NextPage = () => {
                             <Text fontWeight="medium" fontSize="lg" py={6}>
                                 Faça login na sua conta PLUS, com email:
                             </Text>
-                            <EmailInput />
-                            <PasswordInput />
-                            <Button w="100%" colorScheme="whatsapp" color="brand.white-900">
-                                <Text fontWeight="medium" fontSize="lg">
-                                    Login
-                                </Text>
-                            </Button>
+
+                            <VStack as="form" gap={3} w="100%" onSubmit={handleSubmit(handleEmailSingIn)}>
+
+                                <Input
+                                    {...register("email")}
+                                    name="email"
+                                    type="email"
+                                    label="Email"
+                                    error={errors.email}
+                                />
+
+                                <Input
+                                    {...register("password")}
+                                    password
+                                    name="password"
+                                    label="Senha"
+                                    error={errors.password}
+                                />
+
+                                <Button w="100%" colorScheme="whatsapp" color="brand.white-900" type="submit">
+                                    <Text fontWeight="medium" fontSize="lg">
+                                        Login
+                                    </Text>
+                                </Button>
+                            </VStack>
+
                             <NextLink href="/singup">
                                 <Link color="brand.orange-500" fontSize="sm">Crie uma conta PLUS</Link>
                             </NextLink>
