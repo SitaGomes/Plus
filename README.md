@@ -4,7 +4,11 @@
 
 </div>
 
+<div align="center">
+
 ### 🚧 Work in Progress 🚧
+
+</div>
 
 ## :gear: **Technologies**  
 
