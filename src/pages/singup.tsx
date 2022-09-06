@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import NextLink from "next/link";
 import Head from 'next/head'
+import  Router from "next/router";
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../utils/firebase";
@@ -9,17 +10,18 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 
-import { Button, Container, Link, HStack, Image, Text, useBreakpointValue, VStack, FormControl, } from "@chakra-ui/react";
+import { Button, Container, Link, HStack, Image, Text, useBreakpointValue, VStack, } from "@chakra-ui/react";
 
 import { Input } from "../components/SingIn/Input";
+import toast from "react-hot-toast";
 
-interface ISingIn {
+interface ISingUp {
     email: string,
     password: string,
     password_confirmation: string,
 }
   
-const singInSchema = yup.object().shape({
+const singUpSchema = yup.object().shape({
     email: yup.string().required("E-mail Obrigatório").email("E-mail inválido"),
     password: yup.string().required("Senha Obrigatória").min(6),
     password_confirmation: yup.string().oneOf([
@@ -37,21 +39,28 @@ const SingUp: NextPage = () => {
     })
 
 
-    const {register, handleSubmit, formState} = useForm<ISingIn>({resolver: yupResolver(singInSchema)})  
+    const {register, handleSubmit, formState} = useForm<ISingUp>({resolver: yupResolver(singUpSchema)})  
     const {errors} = formState
 
-    const handleSingIn: SubmitHandler<ISingIn> = async ({email, password}) => {
+    const handleSingUp: SubmitHandler<ISingUp> = async ({email, password}) => {
         try {
 
             const user = await createUserWithEmailAndPassword(auth, email, password)
-
             console.log(user)
+            toast.success("Conta plus criada com sucesso!")
+
+            Router.push("/")
         } catch(err) {
-            console.log(err)
+            const error = err as Error
+
+            if(error.message === "Firebase: Error (auth/email-already-in-use).") {
+                return toast.error("Este usuário já existe")
+            }
+
+            toast.error(error.message)
         }
 
     }
-
 
 
     return(
@@ -81,7 +90,7 @@ const SingUp: NextPage = () => {
                             Crie uma conta PLUS.
                         </Text>
 
-                        <VStack gap={3} w="100%" as="form" onSubmit={handleSubmit(handleSingIn)}>
+                        <VStack gap={3} w="100%" as="form" onSubmit={handleSubmit(handleSingUp)}>
 
                             <Input
                                 {...register("email")}
