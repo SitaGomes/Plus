@@ -1,10 +1,10 @@
 import { NextPage } from "next";
 import NextLink from "next/link";
 import Head from 'next/head'
-import { signIn } from "next-auth/react"
+import { signIn, useSession } from "next-auth/react"
 import Router from "next/router";
 
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, updateCurrentUser } from "firebase/auth";
 import {auth} from "../utils/firebase"
 
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -16,11 +16,14 @@ import toast from "react-hot-toast";
 import {  Button, Container, Divider, Link, HStack, Image, Text, useBreakpointValue, VStack, } from "@chakra-ui/react";
 import { Input } from "../components/SingIn/Input";
 import { Toaster } from "../components/Toaster";
+import { useLocalAuth } from "../hooks/useLocalAuth";
+import { IUser } from "../context/authContext";
 
 interface ISingIn {
     email: string,
     password: string,
 }
+
 
 const singInSchema = yup.object().shape({
     email: yup.string().required("E-mail Obrigatório").email("E-mail inválido"),
@@ -30,16 +33,29 @@ const singInSchema = yup.object().shape({
 const SingIn: NextPage = () => {
 
     
+    const {data: session} = useSession()
+    const {handleSetUser} = useLocalAuth()
+
     const {register, handleSubmit, formState} = useForm<ISingIn>({resolver: yupResolver(singInSchema)})
     const {errors} = formState
 
     const handleEmailSingIn: SubmitHandler<ISingIn> = async ({email, password}) => {
         try {
-            const {user} = await signInWithEmailAndPassword(auth, email, password)
-            console.log(user)
+            await signInWithEmailAndPassword(auth, email, password)
+            
+            const {currentUser} = auth
+            
+            if(currentUser) {
+
+                handleSetUser({
+                    name: currentUser.displayName,
+                    email: currentUser.email,
+                })
+            }
 
             toast.success("Login feito com sucesso!")
             Router.push("/dashboard")
+            
         } catch(err) {
             const error = err as Error
 
@@ -58,9 +74,19 @@ const SingIn: NextPage = () => {
 
     const handleGoogleSingIn = async () => {
         try {
-            await signIn("google", {callbackUrl: "/dashboard", redirect: false})
+            await signIn("google", {callbackUrl: "/dashboard"})
+            
+            if(session){
+                
+                handleSetUser({
+                    name: session.user?.name || "Usuário",
+                    email: session.user?.email || "usuário@gmail.com",
+                    photo_url: session.user?.image
+                })
+                
+            }
+            
             toast.success("Login com o google bem sucedido!") 
-
         } catch (err) {
             toast.error("Error no login com o Google. Por favor tente mais tarde.")
         }

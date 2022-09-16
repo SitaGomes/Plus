@@ -1,6 +1,8 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 
+import {useLocalAuth} from "../hooks/useLocalAuth"
+
 //* Components
 import { AddTransaction } from '../components/AddTransaction'
 import { Menu } from '../components/Menu'
@@ -8,13 +10,12 @@ import { Box, Container, HStack } from '@chakra-ui/react'
 import { TransactionCard } from '../components/TransactionCards'
 import { TransactionTable } from '../components/TransactionTable'
 
-import {useSession} from "next-auth/react"
 
 const Dashboard: NextPage = () => {
 
-  const { data: session } = useSession()
+  const {user} = useLocalAuth()
 
-
+  console.log(user)
 
   return (
     <>

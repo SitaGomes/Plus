@@ -3,7 +3,7 @@ import NextLink from "next/link";
 import Head from 'next/head'
 import  Router from "next/router";
 
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../utils/firebase";
 
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -16,12 +16,14 @@ import { Input } from "../components/SingIn/Input";
 import toast from "react-hot-toast";
 
 interface ISingUp {
+    name: string,
     email: string,
     password: string,
     password_confirmation: string,
 }
   
 const singUpSchema = yup.object().shape({
+    name: yup.string().required("Nome de usuário obrigatório").min(3),
     email: yup.string().required("E-mail Obrigatório").email("E-mail inválido"),
     password: yup.string().required("Senha Obrigatória").min(6),
     password_confirmation: yup.string().oneOf([
@@ -42,10 +44,15 @@ const SingUp: NextPage = () => {
     const {register, handleSubmit, formState} = useForm<ISingUp>({resolver: yupResolver(singUpSchema)})  
     const {errors} = formState
 
-    const handleSingUp: SubmitHandler<ISingUp> = async ({email, password}) => {
+    const handleSingUp: SubmitHandler<ISingUp> = async ({email, password, name}) => {
         try {
 
-            const user = await createUserWithEmailAndPassword(auth, email, password)
+            const {user} = await createUserWithEmailAndPassword(auth, email, password)
+            
+            await updateProfile(user, {
+                displayName: name
+            }) 
+            
             console.log(user)
             toast.success("Conta plus criada com sucesso!")
 
@@ -92,6 +99,14 @@ const SingUp: NextPage = () => {
 
                         <VStack gap={3} w="100%" as="form" onSubmit={handleSubmit(handleSingUp)}>
 
+                            <Input
+                                {...register("name")}
+                                name="name"
+                                type="text"
+                                label="Nome de usuário"
+                                error={errors.name}
+                            />
+                            
                             <Input
                                 {...register("email")}
                                 name="email"

@@ -1,9 +1,13 @@
 import { Box,  Button,  Grid,  HStack, Input, InputGroup, InputLeftElement, Select, Text, VStack,  } from "@chakra-ui/react";
 import { Header } from "./TransactionHeader";
 
-
-
 export function AddTransaction(){
+
+
+
+
+
+    
     return(
         <Box mt={5} borderRadius="20px" bg="brand.white-900">
             <HStack spacing={0} align="center" justifyContent="space-around">
