@@ -1,5 +1,6 @@
 import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google"
+import { useLocalAuth } from "../../../hooks/useLocalAuth";
 
 export default NextAuth({
     providers: [
@@ -12,7 +13,11 @@ export default NextAuth({
                   access_type: "offline",
                   response_type: "code"
                 }
-            }
+            },
+            
+
+
         })
-    ],
+
+    ]
 })

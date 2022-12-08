@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { signIn, useSession } from "next-auth/react"
 import Router from "next/router";
 
-import { signInWithEmailAndPassword, updateCurrentUser } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import {auth} from "../utils/firebase"
 
 import { useForm, SubmitHandler } from 'react-hook-form';
@@ -17,7 +17,6 @@ import {  Button, Container, Divider, Link, HStack, Image, Text, useBreakpointVa
 import { Input } from "../components/SingIn/Input";
 import { Toaster } from "../components/Toaster";
 import { useLocalAuth } from "../hooks/useLocalAuth";
-import { IUser } from "../context/authContext";
 
 interface ISingIn {
     email: string,
@@ -33,7 +32,7 @@ const singInSchema = yup.object().shape({
 const SingIn: NextPage = () => {
 
     
-    const {data: session} = useSession()
+    const {data: session, status} = useSession()
     const {handleSetUser} = useLocalAuth()
 
     const {register, handleSubmit, formState} = useForm<ISingIn>({resolver: yupResolver(singInSchema)})
@@ -72,27 +71,6 @@ const SingIn: NextPage = () => {
 
     }
 
-    const handleGoogleSingIn = async () => {
-        try {
-            await signIn("google", {callbackUrl: "/dashboard"})
-            
-            if(session){
-                
-                handleSetUser({
-                    name: session.user?.name || "Usuário",
-                    email: session.user?.email || "usuário@gmail.com",
-                    photo_url: session.user?.image
-                })
-                
-            }
-            
-            toast.success("Login com o google bem sucedido!") 
-        } catch (err) {
-            toast.error("Error no login com o Google. Por favor tente mais tarde.")
-        }
-
-    }
-
     const isMobileView = useBreakpointValue({
         base: true,
         lg: false,
@@ -118,55 +96,39 @@ const SingIn: NextPage = () => {
             <HStack justify="space-between" bgColor="brand.white-900" h="100vh">
                 <Container >
                     <VStack h="100%" color="brand.black-700" justify="center">
-                            <Image src="/images/Logo_Slogan.png" alt="Plus - Adicionando lucro a sua vida" />
-                            <Text fontWeight="medium" fontSize="lg" py={6}>
-                                Faça login na sua conta PLUS, com email:
-                            </Text>
+                        <Image src="/images/Logo_Slogan.png" alt="Plus - Adicionando lucro a sua vida" />
+                        <Text fontWeight="medium" fontSize="lg" py={6}>
+                            Faça login na sua conta PLUS, com email:
+                        </Text>
 
-                            <VStack as="form" gap={3} w="100%" onSubmit={handleSubmit(handleEmailSingIn)}>
+                        <VStack as="form" gap={3} w="100%" onSubmit={handleSubmit(handleEmailSingIn)}>
 
-                                <Input
-                                    {...register("email")}
-                                    name="email"
-                                    type="email"
-                                    label="Email"
-                                    error={errors.email}
-                                />
+                            <Input
+                                {...register("email")}
+                                name="email"
+                                type="email"
+                                label="Email"
+                                error={errors.email}
+                            />
 
-                                <Input
-                                    {...register("password")}
-                                    password
-                                    name="password"
-                                    label="Senha"
-                                    error={errors.password}
-                                />
+                            <Input
+                                {...register("password")}
+                                password
+                                name="password"
+                                label="Senha"
+                                error={errors.password}
+                            />
 
-                                <Button w="100%" colorScheme="whatsapp" color="brand.white-900" type="submit">
-                                    <Text fontWeight="medium" fontSize="lg">
-                                        Login
-                                    </Text>
-                                </Button>
-                            </VStack>
-
-                            <NextLink href="/singup">
-                                <Link color="brand.orange-500" fontSize="sm">Crie uma conta PLUS</Link>
-                            </NextLink>
-
-                                <Divider orientation='horizontal' />
-                                <Text py={6} fontWeight="medium" fontSize="lg">ou</Text>
-                                <Divider orientation='horizontal' />
-
-
-                            <Button
-                                w="100%"
-                                colorScheme="red"
-                                color="brand.white-900"
-                                onClick={handleGoogleSingIn}           
-                            >
+                            <Button w="100%" colorScheme="whatsapp" color="brand.white-900" type="submit">
                                 <Text fontWeight="medium" fontSize="lg">
-                                    Google
+                                    Login
                                 </Text>
                             </Button>
+                        </VStack>
+
+                        <NextLink href="/singup">
+                            <Link color="brand.orange-500" fontSize="sm">Crie uma conta PLUS</Link>
+                        </NextLink>
 
                     </VStack>
                 </Container>

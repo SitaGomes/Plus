@@ -1,4 +1,5 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useCallback, useState } from "react";
+import { useLocalState } from "../hooks/useLocalState";
 
 interface ITransaction {
     anotation: string,
@@ -20,11 +21,11 @@ export const TransactionContext = createContext<ITransactionContext>({} as ITran
 
 export function TransactionProvider({children}: ITransactionProvider) {
 
-    const [transactions, setTransaction] = useState<ITransaction[]>([])
+    const [transactions, setTransaction] = useLocalState<ITransaction[]>("transaction", [])
 
-    function handleSetTransaction(transaction: ITransaction) {
+    const handleSetTransaction = useCallback((transaction: ITransaction) => {
         setTransaction([...transactions, transaction])
-    }
+    }, [transactions, setTransaction])
 
     return(
         <TransactionContext.Provider value={{transactions, handleSetTransaction}}>

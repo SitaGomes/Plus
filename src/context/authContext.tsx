@@ -1,4 +1,5 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useCallback, useState } from "react";
+import { useLocalState } from "../hooks/useLocalState";
 
 export interface IUser {
     name: string | null,
@@ -18,11 +19,12 @@ interface IAuthProvider {
 export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 export function AuthProvider({children}: IAuthProvider) {
-    const [user, setUser] = useState({} as IUser)
 
-    const handleSetUser = (user: IUser) => {
+    const [user, setUser] = useLocalState("user", {} as IUser)
+
+    const handleSetUser = useCallback((user: IUser) => {
         setUser(user)
-    }
+    }, [setUser])
 
     return(
         <AuthContext.Provider value={{handleSetUser, user}}>

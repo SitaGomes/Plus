@@ -1,6 +1,6 @@
 import { Box, Table, TableCaption, TableContainer, Tbody, Td, Tfoot, Th, Thead, Tr } from "@chakra-ui/react";
 
-export function TransactionTable(){
+export function TransactionHistory(){
     return(
         <TableContainer bgColor="brand.white-900" borderRadius="20px" p={3}>
             <Table variant='simple' size="lg" >

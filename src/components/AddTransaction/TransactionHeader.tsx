@@ -1,12 +1,12 @@
-import { Center, Text } from "@chakra-ui/react"
+import { Center, HTMLChakraProps, Text } from "@chakra-ui/react"
 import { ReactNode } from "react"
 
-interface IHeader {
+interface IHeader extends HTMLChakraProps<"div"> {
     children: ReactNode,
     inverted?: boolean,
 }
 
-export function Header({children, inverted}:IHeader) {
+export function TransactionHeader({children, inverted, ...rest}:IHeader) {
 
     const color = inverted
         ? "brand.green-500"
@@ -28,8 +28,11 @@ export function Header({children, inverted}:IHeader) {
           h="100%"
           color="brand.white-900"
 
+          cursor={"pointer"}
+
           bgColor={color}
           py={4}
+          {...rest}
         >
             <Text           
                 fontWeight="medium"
