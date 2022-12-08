@@ -1,9 +1,18 @@
-import { Box,  Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerOverlay, HStack, Icon, IconButton, Image, Text, VStack } from "@chakra-ui/react";
+import { Avatar, Box,  Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerOverlay, HStack, Icon, IconButton, Image, Text, VStack } from "@chakra-ui/react";
 import { MenuCard } from "./MenuCard";
 
 import {RiMenuLine} from "react-icons/ri"
 import { useState } from "react";
-export function MobileMenu(){
+
+
+interface IMobileMenu {
+    userName: string;
+    userEmail: string;
+}
+
+
+
+export function MobileMenu({userName, userEmail}: IMobileMenu){
 
     const [isMenuOpen, setOpenMenu] = useState(false)
 
@@ -36,17 +45,16 @@ export function MobileMenu(){
                         <DrawerBody>
                             <VStack>
                                 <Box>
-                                    <Image
+                                    <Avatar
                                         borderRadius='full'
                                         boxSize='80px'
-                                        src='https://bit.ly/dan-abramov'
-                                        alt='Jão pessoa'
+                                        name={userName}
                                     />
                                 </Box>
 
                                 <VStack align="center" justify="center">
-                                    <Text fontWeight="medium">Jão pessoa</Text>
-                                    <Text fontSize="sm">Joaopessoa@gmail.com</Text>
+                                    <Text fontWeight="medium">{userName}</Text>
+                                    <Text fontSize="sm">{userEmail}</Text>
                                 </VStack>
 
                             </VStack>

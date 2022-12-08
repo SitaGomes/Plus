@@ -1,19 +1,16 @@
-import type { NextPage } from 'next'
+import type { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
+
 
 //* Components
 import { AddTransaction } from '../components/AddTransaction'
 import { Menu } from '../components/Menu'
 import { Box, Container, HStack } from '@chakra-ui/react'
 import { TransactionCard } from '../components/TransactionCards'
-import { TransactionTable } from '../components/TransactionTable'
+import { TransactionHistory } from '../components/TransactionHistory'
 
-import {useSession} from "next-auth/react"
 
 const Dashboard: NextPage = () => {
-
-  const { data: session } = useSession()
-
 
 
   return (
@@ -33,16 +30,14 @@ const Dashboard: NextPage = () => {
 
       <Menu />
 
-
       <Container maxW="1100px">
         <AddTransaction />
-
 
         <HStack mt={5} gap={5} flexWrap="wrap" justify={["center", "center","flex-start"]}>
           <TransactionCard />
 
           <Box w={["100%", 500]} flex="1">
-            <TransactionTable />
+            <TransactionHistory />
           </Box>
 
         </HStack>
@@ -56,3 +51,12 @@ const Dashboard: NextPage = () => {
 }
 
 export default Dashboard
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+   
+  return {
+    props: {}, // will be passed to the page component as props
+  }
+}
+
+

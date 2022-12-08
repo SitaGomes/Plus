@@ -1,7 +1,14 @@
-import { Box, Container, HStack, Image, Text, VStack } from "@chakra-ui/react";
+import { Avatar, Box, Container, HStack, Image, Text, VStack } from "@chakra-ui/react";
 import { MenuCard } from "./MenuCard";
 
-export function DesktopMenu(){
+interface IDesktopMenu {
+    userName: string;
+    userEmail: string ;
+
+}
+
+
+export function DesktopMenu({userName, userEmail}: IDesktopMenu){
     return(
         <Box w="100vw" bgColor="brand.white-900" borderBottomRadius="50px">
             <Container maxW="1100px">
@@ -24,15 +31,14 @@ export function DesktopMenu(){
                     </HStack>
                     <HStack>
                         <VStack align="flex-end" justify="center" spacing={0} pr={3}>
-                            <Text fontWeight="medium">Jão pessoa</Text>
-                            <Text fontSize="sm">Joaopessoa@gmail.com</Text>
+                            <Text fontWeight="medium">{userName}</Text>
+                            <Text fontSize="sm">{userEmail}</Text>
                         </VStack>
                         <Box>
-                            <Image
+                            <Avatar
                                 borderRadius='full'
                                 boxSize='80px'
-                                src='https://bit.ly/dan-abramov'
-                                alt='Jão pessoa'
+                                name={userName}
                             />
                         </Box>
                     </HStack>

@@ -1,4 +1,6 @@
 import { useBreakpointValue } from "@chakra-ui/react";
+import Router from "next/router";
+import { useLocalAuth } from "../../hooks/useLocalAuth";
 import { DesktopMenu } from "./DesktopMenu";
 import { MobileMenu } from "./MobileMenu";
 
@@ -9,10 +11,23 @@ export function Menu(){
         lg: false,
     })
 
-    if(isMobileView) {
-        return <MobileMenu />
+    const {user} = useLocalAuth()
+
+    if(!user) {
+        Router.push("/")
     }
 
-    return <DesktopMenu />
+
+    if(isMobileView) {
+        return <MobileMenu 
+                    userName={user.name ? user.name : "user"} 
+                    userEmail={user.email ? user.email : "email"}
+                />
+    }
+
+    return <DesktopMenu 
+                userName={user.name ? user.name : "user"} 
+                userEmail={user.email ? user.email : "email"}
+            />
     
 }
