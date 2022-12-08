@@ -19,6 +19,7 @@
     "react-hook-form": "^7.34.2",
     "react-hot-toast": "^2.3.0",
     "react-icons": "^4.4.0",
+    "uuid": "^9.0.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {
@@ -28,6 +29,7 @@
     "@types/node": "18.7.13",
     "@types/react": "18.0.17",
     "@types/react-dom": "18.0.6",
+    "@types/uuid": "^9.0.0",
     "eslint": "8.23.0",
     "eslint-config-next": "12.2.5",
     "framer-motion": "^7.2.1",

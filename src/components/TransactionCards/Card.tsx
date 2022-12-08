@@ -1,13 +1,13 @@
-import { VStack } from "@chakra-ui/react";
+import { Box, HTMLChakraProps, VStack } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
-interface ICard {
+interface ICard extends HTMLChakraProps<"div"> {
     children: ReactNode,
     income?: boolean,
     total?: boolean
 }
 
-export function Card({children, income = false, total = false}: ICard){
+export function Card({children, income = false, total = false, ...rest}: ICard){
 
     if(income){
         return(
@@ -18,6 +18,7 @@ export function Card({children, income = false, total = false}: ICard){
                 py={2}
                 borderRadius="20px"
                 color="brand.white-900"
+                {...rest}
             >
                 {children}
             </VStack>
@@ -33,6 +34,7 @@ export function Card({children, income = false, total = false}: ICard){
                 py={2}
                 borderRadius="20px"
                 color="brand.green-500"
+                {...rest}
             >
                 {children}
             </VStack>
@@ -49,6 +51,7 @@ export function Card({children, income = false, total = false}: ICard){
                 py={2}
                 borderRadius="20px"
                 color="brand.white-900"
+                {...rest}
             >
                 {children}
         </VStack>

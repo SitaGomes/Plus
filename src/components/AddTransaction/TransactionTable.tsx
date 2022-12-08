@@ -1,12 +1,13 @@
-import { Box, Button, FormErrorMessage, Grid, InputGroup, FormControl, Select, Text } from "@chakra-ui/react";
-import { useState } from "react";
+import { Button, FormErrorMessage, Grid, InputGroup, FormControl, Select, Text } from "@chakra-ui/react";
 import { useTransaction } from "../../hooks/useTransaction";
 
-import * as yup from "yup";
-import { SubmitHandler, useForm } from "react-hook-form";
+import {v4} from "uuid"
 
 import { Input } from "../SingIn/Input";
+import { SubmitHandler, useForm } from "react-hook-form";
+
 import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 interface TransactionTable {
     deposit: boolean;
@@ -19,7 +20,6 @@ interface ITransactionTable {
     date: Date,
 }
 
-
 const transactionSchema = yup.object().shape({
     reminder: yup.string().required("Adicione uma anotação"),
     category: yup.string().required("Categoria obrigatória"),
@@ -30,13 +30,27 @@ const transactionSchema = yup.object().shape({
 
 export function TransactionTable({deposit}: TransactionTable) {
 
-    const {handleSetTransaction} = useTransaction()
-    const {register, handleSubmit, formState} = useForm<ITransactionTable>({resolver: yupResolver(transactionSchema)})
+    const {handleAddTransaction} = useTransaction()
+    const {register, handleSubmit, formState, resetField} = useForm<ITransactionTable>({resolver: yupResolver(transactionSchema)})
 
     const {errors} = formState
 
-    const handleAddTransaction: SubmitHandler<ITransactionTable> = async ({category, date, value, reminder}) => {
+    const handleNewTransaction: SubmitHandler<ITransactionTable> = async ({category, date, value, reminder}) => {
         console.log(category, date, value, reminder)
+
+        handleAddTransaction({
+            id: v4(),
+            category: category,
+            date: date,
+            reminder: reminder,
+            value: value,
+            type: deposit ? 'deposit' : 'revenue'
+        })
+
+        resetField("category")
+        resetField("date")
+        resetField("reminder")
+        resetField("value")
     }
     
    
@@ -71,7 +85,7 @@ export function TransactionTable({deposit}: TransactionTable) {
                         
                         <FormControl isInvalid={!!errors.category}>
                             <Select variant='filled' {...register("category")} >
-                                <option value=''>Selecione...</option>
+                                <option value=''>Selecione uma categoria...</option>
                                 <option value='casa'>Casa</option>
                                 <option value='conta'>Conta</option>
                             </Select>
@@ -85,7 +99,7 @@ export function TransactionTable({deposit}: TransactionTable) {
                     : (
                         <FormControl isInvalid={!!errors.category}>
                             <Select variant='filled' {...register("category")} >
-                                <option value=''>Selecione...</option>
+                                <option value=''>Selecione uma categoria...</option>
                                 <option value='salario'>Salario</option>
                             </Select>
 
@@ -112,10 +126,10 @@ export function TransactionTable({deposit}: TransactionTable) {
                         alignSelf="flex-end"
                         size='sm'
                         colorScheme="red"
-                        onClick={handleSubmit(handleAddTransaction)}
+                        onClick={handleSubmit(handleNewTransaction)}
                     >
                         <Text px={6} color="brand.white-900">
-                            ADICIONAR DESPESA
+                            NOVA DESPESA
                         </Text>
                     </Button>
                 )
@@ -124,10 +138,10 @@ export function TransactionTable({deposit}: TransactionTable) {
                         alignSelf="flex-end"
                         size='sm'
                         colorScheme="green"
-                        onClick={handleSubmit(handleAddTransaction)}
+                        onClick={handleSubmit(handleNewTransaction)}
                     >
                         <Text px={6} color="brand.white-900">
-                            ADICIONAR RECEITA
+                            NOVA RECEITA
                         </Text>
                     </Button>
                 )
