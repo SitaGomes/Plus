@@ -13,6 +13,9 @@ import { TransactionHistory } from '../components/TransactionHistory'
 const Dashboard: NextPage = () => {
 
 
+
+  
+
   return (
     <>
       <Head>
@@ -34,6 +37,7 @@ const Dashboard: NextPage = () => {
         <AddTransaction />
 
         <HStack mt={5} gap={5} flexWrap="wrap" justify={["center", "center","flex-start"]}>
+
           <TransactionCard />
 
           <Box w={["100%", 500]} flex="1">
