@@ -8,11 +8,12 @@ import { useState } from "react";
 interface IMobileMenu {
     userName: string;
     userEmail: string;
+    path: string;
 }
 
 
 
-export function MobileMenu({userName, userEmail}: IMobileMenu){
+export function MobileMenu({userName, userEmail, path}: IMobileMenu){
 
     const [isMenuOpen, setOpenMenu] = useState(false)
 
@@ -60,16 +61,31 @@ export function MobileMenu({userName, userEmail}: IMobileMenu){
                             </VStack>
 
                             <VStack mt={10} gap={10}>
-                                    <MenuCard active>
-                                        Dashboard
-                                    </MenuCard>
-                                    <MenuCard>
-                                        Estatísca
-                                    </MenuCard>
-                                    <MenuCard>
-                                        Orçamento
-                                    </MenuCard>
-                                </VStack>
+                                    {path === "/dashboard" 
+                                        ? (
+                                            <MenuCard href={"/dashboard"} active>
+                                                Dashboard
+                                            </MenuCard>
+                                        )
+                                        : (
+                                            <MenuCard href={"/dashboard"}>
+                                                Dashboard
+                                            </MenuCard>
+                                        )
+                                    }
+                                    {path === "/stats" 
+                                        ? (
+                                            <MenuCard href={"/stats"} active>
+                                                Estatisticas
+                                            </MenuCard>
+                                        )
+                                        : (
+                                            <MenuCard href={"/stats"}>
+                                                Estatisticas
+                                            </MenuCard>
+                                        )
+                                    }
+                            </VStack>
                         </DrawerBody>
                         
                     </DrawerContent>

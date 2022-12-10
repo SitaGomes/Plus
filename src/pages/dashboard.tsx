@@ -12,10 +12,6 @@ import { TransactionHistory } from '../components/TransactionHistory'
 
 const Dashboard: NextPage = () => {
 
-
-
-  
-
   return (
     <>
       <Head>
