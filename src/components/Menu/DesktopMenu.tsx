@@ -1,14 +1,17 @@
 import { Avatar, Box, Container, HStack, Image, Text, VStack } from "@chakra-ui/react";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import { MenuCard } from "./MenuCard";
 
 interface IDesktopMenu {
     userName: string;
     userEmail: string ;
-
+    path: string;
 }
 
 
-export function DesktopMenu({userName, userEmail}: IDesktopMenu){
+export function DesktopMenu({userName, userEmail, path}: IDesktopMenu){
+
     return(
         <Box w="100vw" bgColor="brand.white-900" borderBottomRadius="50px">
             <Container maxW="1100px">
@@ -17,15 +20,30 @@ export function DesktopMenu({userName, userEmail}: IDesktopMenu){
                         <Image src="/images/logo.png" alt="Plus logo" mr={4}/>
 
                         <HStack >
-                            <MenuCard active>
-                                Dashboard
-                            </MenuCard>
-                            <MenuCard>
-                                Estatísca
-                            </MenuCard>
-                            <MenuCard>
-                                Orçamento
-                            </MenuCard>
+                            {path === "/dashboard" 
+                                ? (
+                                    <MenuCard href={"/dashboard"} active>
+                                        Dashboard
+                                    </MenuCard>
+                                )
+                                : (
+                                    <MenuCard href={"/dashboard"}>
+                                        Dashboard
+                                    </MenuCard>
+                                )
+                            }
+                            {path === "/stats" 
+                                ? (
+                                    <MenuCard href={"/stats"} active>
+                                        Estatisticas
+                                    </MenuCard>
+                                )
+                                : (
+                                    <MenuCard href={"/stats"}>
+                                        Estatisticas
+                                    </MenuCard>
+                                )
+                            }
                         </HStack>
 
                     </HStack>
