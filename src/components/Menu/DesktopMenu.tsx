@@ -1,6 +1,5 @@
-import { Avatar, Box, Container, HStack, Image, Text, VStack } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import { useState } from "react";
+import { Avatar, Box, Container, HStack, Image, Text, VStack, Link as ChakraLink } from "@chakra-ui/react";
+import Link from "next/link";
 import { MenuCard } from "./MenuCard";
 
 interface IDesktopMenu {
@@ -53,11 +52,15 @@ export function DesktopMenu({userName, userEmail, path}: IDesktopMenu){
                             <Text fontSize="sm">{userEmail}</Text>
                         </VStack>
                         <Box>
-                            <Avatar
-                                borderRadius='full'
-                                boxSize='80px'
-                                name={userName}
-                            />
+                            <Link href="/user">
+                                <ChakraLink >
+                                    <Avatar
+                                        borderRadius='full'
+                                        boxSize='80px'
+                                        name={userName}
+                                    />
+                                </ChakraLink>
+                            </Link>
                         </Box>
                     </HStack>
                 </HStack>

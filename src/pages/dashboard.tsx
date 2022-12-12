@@ -1,7 +1,6 @@
 import type { GetServerSideProps, NextPage } from 'next'
 import Head from 'next/head'
 
-
 //* Components
 import { AddTransaction } from '../components/AddTransaction'
 import { Menu } from '../components/Menu'

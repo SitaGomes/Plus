@@ -37,7 +37,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputProps> =
                         />
 
                         <InputRightElement width='4.5rem' height="100%">
-                            <Button h='1.75rem' size='sm' onClick={handleClick}>
+                            <Button bg="transparent" h='1.75rem' size='sm' onClick={handleClick}>
                                 {show ? 'Esconder' : 'Mostrar'}
                             </Button>
                         </InputRightElement>
