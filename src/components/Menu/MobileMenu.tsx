@@ -1,8 +1,9 @@
-import { Avatar, Box,  Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerOverlay, HStack, Icon, IconButton, Image, Text, VStack } from "@chakra-ui/react";
+import { Link as ChakraLink, Avatar, Box,  Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerOverlay, HStack, Icon, IconButton, Image, Text, VStack } from "@chakra-ui/react";
 import { MenuCard } from "./MenuCard";
 
 import {RiMenuLine} from "react-icons/ri"
 import { useState } from "react";
+import Link from "next/link";
 
 
 interface IMobileMenu {
@@ -46,11 +47,18 @@ export function MobileMenu({userName, userEmail, path}: IMobileMenu){
                         <DrawerBody>
                             <VStack>
                                 <Box>
-                                    <Avatar
-                                        borderRadius='full'
-                                        boxSize='80px'
-                                        name={userName}
-                                    />
+                                    <Link href="/user">
+                                        <ChakraLink>
+
+                                            <Avatar
+                                                borderRadius='full'
+                                                boxSize='80px'
+                                                name={userName}
+                                            />
+
+                                        </ChakraLink>
+
+                                    </Link>
                                 </Box>
 
                                 <VStack align="center" justify="center">
