@@ -1,22 +1,24 @@
 import { NextPage } from "next";
 import NextLink from "next/link";
 import Head from 'next/head'
-import { signIn, useSession } from "next-auth/react"
 import Router from "next/router";
+
+import { useSession, useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
+import { useEffect, useState } from "react";
 
 import { signInWithEmailAndPassword } from "firebase/auth";
 import {auth} from "../utils/firebase"
+
+import { ToastContainer, toast } from 'react-toastify';
 
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 
-import toast from "react-hot-toast";
-
-import {  Button, Container, Divider, Link, HStack, Image, Text, useBreakpointValue, VStack, } from "@chakra-ui/react";
+import {  Button, Container, Link, HStack, Image, Text, useBreakpointValue, VStack, } from "@chakra-ui/react";
 import { Input } from "../components/SingIn/Input";
-import { Toaster } from "../components/Toaster";
 import { useLocalAuth } from "../hooks/useLocalAuth";
+
 
 interface ISingIn {
     email: string,
@@ -31,8 +33,10 @@ const singInSchema = yup.object().shape({
 
 const SingIn: NextPage = () => {
 
-    
-    const {data: session, status} = useSession()
+    const session = useSession()
+    const supabase = useSupabaseClient()
+    const user = useUser()
+
     const {handleSetUser} = useLocalAuth()
 
     const {register, handleSubmit, formState} = useForm<ISingIn>({resolver: yupResolver(singInSchema)})
@@ -40,33 +44,53 @@ const SingIn: NextPage = () => {
 
     const handleEmailSingIn: SubmitHandler<ISingIn> = async ({email, password}) => {
         try {
-            await signInWithEmailAndPassword(auth, email, password)
+            // await signInWithEmailAndPassword(auth, email, password)
             
-            const {currentUser} = auth
+            // const {currentUser} = auth
             
-            if(currentUser) {
+            // if(currentUser) {
 
-                handleSetUser({
-                    name: currentUser.displayName,
-                    email: currentUser.email,
-                })
-            }
+            //     handleSetUser({
+            //         name: currentUser.displayName,
+            //         email: currentUser.email,
+            //     })
+            // }
 
-            toast.success("Login feito com sucesso!")
-            Router.push("/dashboard")
+            const {data, error} = await supabase.auth.signInWithPassword({
+                email: email,
+                password: password
+            })
+
+            toast.success("Login feito com sucesso!", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+
+            console.log(data)
+
+            
+
+            // Router.push("/dashboard")
             
         } catch(err) {
-            const error = err as Error
+            // const error = err as Error
 
-            if (error.message === "Firebase: Error (auth/wrong-password)."){
-                return toast.error("Senha errada")
-            }
+            // if (error.message === "Firebase: Error (auth/wrong-password)."){
+            //     return toast.error("Senha errada")
+            // }
 
-            if (error.message === "Firebase: Error (auth/user-not-found).") {
-                return toast.error("Usuário não existe")
-            }
+            // if (error.message === "Firebase: Error (auth/user-not-found).") {
+            //     return toast.error("Usuário não existe")
+            // }
 
-            toast.error(error.message)
+            // toast.error(error.message)
+            console.log(err)
         }
 
     }
@@ -75,6 +99,7 @@ const SingIn: NextPage = () => {
         base: true,
         lg: false,
     })
+
 
 
     return(
@@ -91,17 +116,28 @@ const SingIn: NextPage = () => {
                 <link rel="manifest" href="/site.webmanifest"/>
                 <meta name="viewport" content="initial-scale=1, width=device-width" />
             </Head>
-            <Toaster />
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
 
             <HStack justify="space-between" bgColor="brand.white-900" h="100vh">
-                <Container >
+                <Container>
                     <VStack h="100%" color="brand.black-700" justify="center">
                         <Image src="/images/Logo_Slogan.png" alt="Plus - Adicionando lucro a sua vida" />
                         <Text fontWeight="medium" fontSize="lg" py={6}>
-                            Faça login na sua conta PLUS, com email:
+                            Entre na sua conta PLUS:
                         </Text>
 
-                        <VStack as="form" gap={3} w="100%" onSubmit={handleSubmit(handleEmailSingIn)}>
+                        <VStack as="form" gap={3} maxW="350px" w="100%" onSubmit={handleSubmit(handleEmailSingIn)}>
 
                             <Input
                                 {...register("email")}
@@ -119,15 +155,18 @@ const SingIn: NextPage = () => {
                                 error={errors.password}
                             />
 
-                            <Button w="100%" colorScheme="whatsapp" color="brand.white-900" type="submit">
+                            <Button w="100%" bg="brand.green-500" _hover={{bg: "#21AD7C"}} color="brand.white-900" type="submit">
                                 <Text fontWeight="medium" fontSize="lg">
                                     Login
                                 </Text>
                             </Button>
+
                         </VStack>
 
                         <NextLink href="/singup">
-                            <Link color="brand.orange-500" fontSize="sm">Crie uma conta PLUS</Link>
+                            <Link color="brand.orange-500" fontSize="sm">
+                                Não tem uma conta? Crie uma de graça.
+                            </Link>
                         </NextLink>
 
                     </VStack>

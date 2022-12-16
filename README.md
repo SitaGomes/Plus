@@ -10,6 +10,10 @@
 
 </div>
 
+## 🗃 **Database**
+[ ]
+
+
 ## :gear: **Technologies**  
 
 * [NextJS](https://nextjs.org/)

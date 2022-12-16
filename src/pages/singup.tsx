@@ -3,8 +3,7 @@ import NextLink from "next/link";
 import Head from 'next/head'
 import  Router from "next/router";
 
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "../utils/firebase";
+import { ToastContainer, toast } from 'react-toastify';
 
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -13,7 +12,7 @@ import * as yup from "yup";
 import { Button, Container, Link, HStack, Image, Text, useBreakpointValue, VStack, } from "@chakra-ui/react";
 
 import { Input } from "../components/SingIn/Input";
-import toast from "react-hot-toast";
+import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 
 interface ISingUp {
     name: string,
@@ -34,12 +33,7 @@ const singUpSchema = yup.object().shape({
 
 const SingUp: NextPage = () => {
 
-
-    const isMobileView = useBreakpointValue({
-        base: true,
-        lg: false,
-    })
-
+    const supabase = useSupabaseClient()
 
     const {register, handleSubmit, formState} = useForm<ISingUp>({resolver: yupResolver(singUpSchema)})  
     const {errors} = formState
@@ -47,27 +41,58 @@ const SingUp: NextPage = () => {
     const handleSingUp: SubmitHandler<ISingUp> = async ({email, password, name}) => {
         try {
 
-            const {user} = await createUserWithEmailAndPassword(auth, email, password)
+            // const {user} = await createUserWithEmailAndPassword(auth, email, password)
             
-            await updateProfile(user, {
-                displayName: name
-            }) 
+            // await updateProfile(user, {
+            //     displayName: name
+            // }) 
             
-            console.log(user)
-            toast.success("Conta plus criada com sucesso!")
+            // console.log(user)
+            // toast.success("Conta plus criada com sucesso!")
 
-            Router.push("/")
+            // Router.push("/")
+            
+            const {data, error} = await supabase.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    data: {
+                        name: name,
+                        email: email,
+                        password: password
+                    }
+                }
+            })
+
+            toast.info('Confirme o seu email pelo link enviado', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+
         } catch(err) {
-            const error = err as Error
+            // const error = err as Error
 
-            if(error.message === "Firebase: Error (auth/email-already-in-use).") {
-                return toast.error("Este usuário já existe")
-            }
+            // if(error.message === "Firebase: Error (auth/email-already-in-use).") {
+            //     return toast.error("Este usuário já existe")
+            // }
 
-            toast.error(error.message)
+            // toast.error(error.message)
+
+            console.log(err)
         }
 
     }
+
+    const isMobileView = useBreakpointValue({
+        base: true,
+        lg: false,
+    })
 
 
     return(
@@ -84,6 +109,18 @@ const SingUp: NextPage = () => {
                 <link rel="manifest" href="/site.webmanifest"/>
                 <meta name="viewport" content="initial-scale=1, width=device-width" />
             </Head>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
 
             <HStack justify="space-between" bgColor="brand.white-900" h="100vh">
                 <Container >
@@ -97,7 +134,7 @@ const SingUp: NextPage = () => {
                             Crie uma conta PLUS.
                         </Text>
 
-                        <VStack gap={3} w="100%" as="form" onSubmit={handleSubmit(handleSingUp)}>
+                        <VStack gap={3} maxW="350px" w="100%" as="form" onSubmit={handleSubmit(handleSingUp)}>
 
                             <Input
                                 {...register("name")}
@@ -132,7 +169,7 @@ const SingUp: NextPage = () => {
                             />
 
 
-                            <Button w="100%" colorScheme="whatsapp" color="brand.white-900" type="submit">
+                            <Button w="100%" bg="brand.green-500" _hover={{bg: "#21AD7C"}} color="brand.white-900" type="submit">
                                 <Text fontWeight="medium" fontSize="lg">
                                     Criar conta
                                 </Text>
@@ -143,7 +180,7 @@ const SingUp: NextPage = () => {
 
                         <NextLink href="/">
                             <Link color="brand.orange-500" fontSize="sm">
-                                Entre na sua conta PLUS
+                                Ja tem uma conta? Entre.
                             </Link>
                         </NextLink>
 
