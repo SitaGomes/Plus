@@ -1,9 +1,13 @@
-import { Link as ChakraLink, Avatar, Box,  Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerOverlay, HStack, Icon, IconButton, Image, Text, VStack } from "@chakra-ui/react";
+import { Link as ChakraLink, Avatar, Box,  Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerOverlay, HStack, Icon, IconButton, Image, Text, VStack, Button } from "@chakra-ui/react";
 import { MenuCard } from "./MenuCard";
 
 import {RiMenuLine} from "react-icons/ri"
 import { useState } from "react";
 import Link from "next/link";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { toast } from "react-toastify";
+import Router from "next/router";
+import { useLocalAuth } from "../../hooks/useLocalAuth";
 
 
 interface IMobileMenu {
@@ -18,9 +22,31 @@ interface IMobileMenu {
 export function MobileMenu({userName, userEmail, userPhotoUrl, path}: IMobileMenu){
 
     const [isMenuOpen, setOpenMenu] = useState(false)
+    const supabase = useSupabaseClient()
+
 
     const toggleMenu = () => {
         setOpenMenu(!isMenuOpen)
+    }
+
+    const handleUserLogout = async () => {
+        const { error } = await supabase.auth.signOut()
+
+        if(error) {
+            toast.error(error.message, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            return
+        }
+
+        Router.push("/")
     }
 
     return(
@@ -45,57 +71,63 @@ export function MobileMenu({userName, userEmail, userPhotoUrl, path}: IMobileMen
                     <DrawerContent  bg="brand.white-900" color="brand.black-700" p="4">
                         <DrawerCloseButton mr="80%"/>
 
-                        <DrawerBody>
-                            <VStack>
-                                <Box>
-                                    <Link href="/user">
-                                        <ChakraLink>
+                        <DrawerBody display="flex" flexDirection="column" justifyContent="space-between">
+                            <Box>
 
-                                            <Avatar
-                                                borderRadius='full'
-                                                boxSize='80px'
-                                                src={userPhotoUrl}
-                                                name={userName}
-                                            />
+                                <VStack>
+                                    <Box>
+                                        <Link href="/user">
+                                            <ChakraLink>
 
-                                        </ChakraLink>
+                                                <Avatar
+                                                    borderRadius='full'
+                                                    boxSize='80px'
+                                                    src={userPhotoUrl}
+                                                    name={userName}
+                                                />
 
-                                    </Link>
-                                </Box>
+                                            </ChakraLink>
 
-                                <VStack align="center" justify="center">
-                                    <Text fontWeight="medium">{userName}</Text>
-                                    <Text fontSize="sm">{userEmail}</Text>
+                                        </Link>
+                                    </Box>
+
+                                    <VStack align="center" justify="center">
+                                        <Text fontWeight="medium">{userName}</Text>
+                                        <Text fontSize="sm">{userEmail}</Text>
+                                    </VStack>
+
                                 </VStack>
 
-                            </VStack>
-
-                            <VStack mt={10} gap={10}>
-                                    {path === "/dashboard" 
-                                        ? (
-                                            <MenuCard href={"/dashboard"} active>
-                                                Dashboard
-                                            </MenuCard>
-                                        )
-                                        : (
-                                            <MenuCard href={"/dashboard"}>
-                                                Dashboard
-                                            </MenuCard>
-                                        )
-                                    }
-                                    {path === "/stats" 
-                                        ? (
-                                            <MenuCard href={"/stats"} active>
-                                                Estatisticas
-                                            </MenuCard>
-                                        )
-                                        : (
-                                            <MenuCard href={"/stats"}>
-                                                Estatisticas
-                                            </MenuCard>
-                                        )
-                                    }
-                            </VStack>
+                                <VStack mt={10} gap={10}>
+                                        {path === "/dashboard" 
+                                            ? (
+                                                <MenuCard href={"/dashboard"} active>
+                                                    Dashboard
+                                                </MenuCard>
+                                            )
+                                            : (
+                                                <MenuCard href={"/dashboard"}>
+                                                    Dashboard
+                                                </MenuCard>
+                                            )
+                                        }
+                                        {path === "/stats" 
+                                            ? (
+                                                <MenuCard href={"/stats"} active>
+                                                    Estatisticas
+                                                </MenuCard>
+                                            )
+                                            : (
+                                                <MenuCard href={"/stats"}>
+                                                    Estatisticas
+                                                </MenuCard>
+                                            )
+                                        }
+                                </VStack>
+                            </Box>
+                            <Button mt={10} onClick={handleUserLogout} colorScheme="red">
+                                Sair
+                            </Button>
                         </DrawerBody>
                         
                     </DrawerContent>

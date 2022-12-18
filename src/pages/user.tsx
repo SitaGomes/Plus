@@ -1,7 +1,7 @@
-import { Avatar, Box, Button, Container, Flex, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
+import { AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Avatar, Box, Button, Container, Flex, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr, useDisclosure, VStack } from "@chakra-ui/react";
 import { GetServerSidePropsContext, NextPage } from "next";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useLocalAuth } from "../hooks/useLocalAuth";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
@@ -17,6 +17,7 @@ import { Input } from "../components/SingIn/Input";
 import * as yup from "yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import Router from "next/router";
 
 interface IUserPage {
     userData: {
@@ -43,6 +44,9 @@ const UserPage: NextPage<IUserPage> = ({userData}: IUserPage) => {
     const supabase = useSupabaseClient()
     const [hydrated, setHydrated] = useState(false)
     const {handleSetUser, user} = useLocalAuth()
+
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const cancelRef = useRef(null)
 
     const {register, handleSubmit, formState, resetField} = useForm<IUpdate>({resolver: yupResolver(updatesSchema)})
 
@@ -124,24 +128,6 @@ const UserPage: NextPage<IUserPage> = ({userData}: IUserPage) => {
             });
         }
     }
-
-    // const handleUpdateProfile = async () => {
-         
-    //     try {
-    //       if (!user) throw new Error('No user')
-    
-    //       const updates: IUser = {
-    //         email
-    //       }
-    
-    //       let { error } = await supabase.from('profiles').upsert(updates)
-    //       if (error) throw error
-    //       alert('Profile updated!')
-    //     } catch (error) {
-    //       alert('Error updating the data!')
-    //       console.log(error)
-    //     }
-    // }
 
     const handleUpdateProfile: SubmitHandler<IUpdate> = async ({name, password}) => {
 
@@ -233,6 +219,42 @@ const UserPage: NextPage<IUserPage> = ({userData}: IUserPage) => {
 
         resetField("name")
         resetField("password")
+    }
+
+    const handleDeleteProfile = async () => {
+
+        const { error } = await supabase
+            .from('users')
+            .update({ isactive: false })
+            .eq('id', user.id)
+
+        if(error) {
+            toast.error(error.message, {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            return
+        }
+
+        toast.success("Conta deletada com sucesso!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+
+        Router.push("/")
+
     }
 
     return(
@@ -400,6 +422,34 @@ const UserPage: NextPage<IUserPage> = ({userData}: IUserPage) => {
                     </TableContainer>
 
                 </Box>
+
+                <Button w="100%" mt={20} mb={5} onClick={onOpen} colorScheme="red">Deletar a conta</Button>
+
+                <AlertDialog
+                    leastDestructiveRef={cancelRef}
+                    motionPreset='slideInBottom'
+                    onClose={onClose}
+                    isOpen={isOpen}
+                    isCentered
+                >
+                    <AlertDialogOverlay />
+
+                    <AlertDialogContent>
+                    <AlertDialogHeader>Deletar conta?</AlertDialogHeader>
+                    <AlertDialogCloseButton />
+                    <AlertDialogBody>
+                        Tem a certeza que deseja deletar a sua conta?
+                    </AlertDialogBody>
+                    <AlertDialogFooter>
+                        <Button ref={cancelRef} onClick={onClose}>
+                            Cancelar
+                        </Button>
+                        <Button onClick={handleDeleteProfile} colorScheme='red' ml={3}>
+                            Deletar
+                        </Button>
+                    </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
 
             </Container>
         

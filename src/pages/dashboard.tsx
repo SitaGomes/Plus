@@ -1,4 +1,4 @@
-import type { GetServerSideProps, NextPage } from 'next'
+import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 
 //* Components
@@ -7,6 +7,7 @@ import { Menu } from '../components/Menu'
 import { Box, Container, HStack } from '@chakra-ui/react'
 import { TransactionCard } from '../components/TransactionCards'
 import { TransactionHistory } from '../components/TransactionHistory'
+import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 
 
 const Dashboard: NextPage = () => {
@@ -51,10 +52,39 @@ const Dashboard: NextPage = () => {
 
 export default Dashboard
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-   
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+  // Create authenticated Supabase Client
+  const supabase = createServerSupabaseClient(ctx)
+  // Check if we have a session
+  const {
+    data: { session },
+  } = await supabase.auth.getSession()
+
+
+  if (!session)
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+
+  // Run queries with RLS on the server
+  const { data } = await supabase
+      .from('users')
+      .select('name, email, photo_url')
+      .eq("id", session.user.id)
+
   return {
-    props: {}, // will be passed to the page component as props
+    props: {
+      initialSession: session,
+      userData: {
+        id: session.user.id,
+        name: data?.[0].name,
+        email: data?.[0].email,
+        photo_url: data?.[0].photo_url,
+      },
+    },
   }
 }
 
