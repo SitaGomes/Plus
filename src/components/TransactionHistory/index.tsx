@@ -39,9 +39,9 @@ export function TransactionHistory(){
                         <TransactionRow 
                             category={t.category}
                             date={t.date}
-                            reminder={t.reminder}
+                            reminder={t.anotation}
                             type={t.type}
-                            value={t.value}
+                            value={t.price}
                             key={t.id}
                         />
                     ))}
