@@ -9,12 +9,13 @@ import Link from "next/link";
 interface IMobileMenu {
     userName: string;
     userEmail: string;
+    userPhotoUrl: string;
     path: string;
 }
 
 
 
-export function MobileMenu({userName, userEmail, path}: IMobileMenu){
+export function MobileMenu({userName, userEmail, userPhotoUrl, path}: IMobileMenu){
 
     const [isMenuOpen, setOpenMenu] = useState(false)
 
@@ -53,6 +54,7 @@ export function MobileMenu({userName, userEmail, path}: IMobileMenu){
                                             <Avatar
                                                 borderRadius='full'
                                                 boxSize='80px'
+                                                src={userPhotoUrl}
                                                 name={userName}
                                             />
 

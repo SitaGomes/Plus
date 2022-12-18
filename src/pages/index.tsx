@@ -35,7 +35,6 @@ const SingIn: NextPage = () => {
 
     const session = useSession()
     const supabase = useSupabaseClient()
-    const user = useUser()
 
     const {handleSetUser} = useLocalAuth()
 
@@ -43,25 +42,14 @@ const SingIn: NextPage = () => {
     const {errors} = formState
 
     const handleEmailSingIn: SubmitHandler<ISingIn> = async ({email, password}) => {
-        try {
-            // await signInWithEmailAndPassword(auth, email, password)
-            
-            // const {currentUser} = auth
-            
-            // if(currentUser) {
+    
+        const {data, error} = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password
+        })
 
-            //     handleSetUser({
-            //         name: currentUser.displayName,
-            //         email: currentUser.email,
-            //     })
-            // }
-
-            const {data, error} = await supabase.auth.signInWithPassword({
-                email: email,
-                password: password
-            })
-
-            toast.success("Login feito com sucesso!", {
+        if(error?.message === "Invalid login credentials") {
+            toast.error("Senha incorreta!", {
                 position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -72,26 +60,52 @@ const SingIn: NextPage = () => {
                 theme: "light",
             });
 
-            console.log(data)
-
-            
-
-            // Router.push("/dashboard")
-            
-        } catch(err) {
-            // const error = err as Error
-
-            // if (error.message === "Firebase: Error (auth/wrong-password)."){
-            //     return toast.error("Senha errada")
-            // }
-
-            // if (error.message === "Firebase: Error (auth/user-not-found).") {
-            //     return toast.error("Usuário não existe")
-            // }
-
-            // toast.error(error.message)
-            console.log(err)
+            return
         }
+
+        if(data.user) {
+
+            const {data: fecthData, error} = await supabase
+                .from("users")
+                .select("name, email, photo_url")
+                .eq("id", data.user.id)
+            
+            if(error) {
+                toast.error(error.message, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+    
+                return
+            }                
+
+            handleSetUser({
+                id: data.user.id,
+                email: fecthData?.[0].email,
+                name: fecthData?.[0].name,
+                photo_url: fecthData?.[0].photo_url
+            })
+        }
+
+
+        toast.success("Login feito com sucesso!", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
+
+        Router.push("/dashboard")
 
     }
 
