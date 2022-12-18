@@ -1,9 +1,10 @@
 import { NextPage } from "next";
 import NextLink from "next/link";
 import Head from 'next/head'
-import  Router from "next/router";
 
 import { ToastContainer, toast } from 'react-toastify';
+
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -12,7 +13,6 @@ import * as yup from "yup";
 import { Button, Container, Link, HStack, Image, Text, useBreakpointValue, VStack, } from "@chakra-ui/react";
 
 import { Input } from "../components/SingIn/Input";
-import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 
 interface ISingUp {
     name: string,
@@ -22,9 +22,9 @@ interface ISingUp {
 }
   
 const singUpSchema = yup.object().shape({
-    name: yup.string().required("Nome de usuário obrigatório").min(3),
+    name: yup.string().required("Nome de usuário obrigatório").min(3, "Nome do usuário deve ter mais de 3 caracteres"),
     email: yup.string().required("E-mail Obrigatório").email("E-mail inválido"),
-    password: yup.string().required("Senha Obrigatória").min(6),
+    password: yup.string().required("Senha Obrigatória").min(6, "Senha deve ter mais de 6 caracteres"),
     password_confirmation: yup.string().oneOf([
         null, yup.ref("password")
     ], "As senhas precisam ser iguais"),
@@ -180,7 +180,7 @@ const SingUp: NextPage = () => {
 
                         <NextLink href="/">
                             <Link color="brand.orange-500" fontSize="sm">
-                                Ja tem uma conta? Entre.
+                                Ja tem uma conta? Entre em sua conta.
                             </Link>
                         </NextLink>
 

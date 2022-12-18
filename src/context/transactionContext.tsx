@@ -3,11 +3,11 @@ import { useLocalState } from "../hooks/useLocalState";
 
 interface ITransaction {
     id: string,
-    reminder: string,
+    anotation: string,
     category: string,
-    value: number,
+    price: number,
     date: Date,
-    type: "deposit" | "revenue"
+    type: "despesa" | "receita"
 }
 
 interface ITransactionContext {

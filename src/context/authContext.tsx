@@ -2,6 +2,7 @@ import { createContext, ReactNode, useCallback, useState } from "react";
 import { useLocalState } from "../hooks/useLocalState";
 
 export interface IUser {
+    id: string | null,
     name: string | null,
     email: string | null,
     photo_url?: string | null,

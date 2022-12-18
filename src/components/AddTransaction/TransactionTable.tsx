@@ -14,16 +14,16 @@ interface TransactionTable {
 }
 
 interface ITransactionTable {
-    reminder: string,
+    anotation: string,
     category: string,
-    value: number,
+    price: number,
     date: Date,
 }
 
 const transactionSchema = yup.object().shape({
-    reminder: yup.string().required("Adicione uma anotação"),
+    anotation: yup.string().required("Adicione uma anotação"),
     category: yup.string().required("Categoria obrigatória"),
-    value: yup.number().required("Preço obrigatório").positive("Valor deve ser positivo"),
+    price: yup.number().required("Preço obrigatório").positive("Valor deve ser positivo"),
     date: yup.date().required("Data obrigatória")
 })
 
@@ -35,22 +35,22 @@ export function TransactionTable({deposit}: TransactionTable) {
 
     const {errors} = formState
 
-    const handleNewTransaction: SubmitHandler<ITransactionTable> = async ({category, date, value, reminder}) => {
-        console.log(category, date, value, reminder)
+    const handleNewTransaction: SubmitHandler<ITransactionTable> = async ({category, date, price, anotation}) => {
+        console.log(category, date, price, anotation)
 
         handleAddTransaction({
             id: v4(),
             category: category,
             date: date,
-            reminder: reminder,
-            value: value,
-            type: deposit ? 'deposit' : 'revenue'
+            anotation: anotation,
+            price: price,
+            type: deposit ? 'despesa' : 'receita'
         })
 
         resetField("category")
         resetField("date")
-        resetField("reminder")
-        resetField("value")
+        resetField("anotation")
+        resetField("price")
     }
     
    
@@ -62,21 +62,21 @@ export function TransactionTable({deposit}: TransactionTable) {
                 gap={6}
             >
                 <Input
-                    {...register("reminder")}
+                    {...register("anotation")}
                     variant='filled'
                     placeholder='Anatação'
                     name="reminder"
-                    error={errors.reminder}
+                    error={errors.anotation}
                 />
 
                 <InputGroup>
                     <Input
-                        {...register("value")}
+                        {...register("price")}
                         variant='filled'
                         type="number"
                         placeholder='Valor R$' 
                         name="value"
-                        error={errors.value}
+                        error={errors.price}
                     />
                 </InputGroup>
 

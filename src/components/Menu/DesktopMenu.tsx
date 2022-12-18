@@ -4,19 +4,20 @@ import { MenuCard } from "./MenuCard";
 
 interface IDesktopMenu {
     userName: string;
-    userEmail: string ;
+    userEmail: string;
+    userPhotoUrl: string;
     path: string;
 }
 
 
-export function DesktopMenu({userName, userEmail, path}: IDesktopMenu){
+export function DesktopMenu({userName, userEmail, userPhotoUrl, path}: IDesktopMenu){
 
     return(
         <Box w="100vw" bgColor="brand.white-900" borderBottomRadius="50px">
             <Container maxW="1100px">
                 <HStack justify="space-between" py={4}>
                     <HStack >
-                        <Image src="/images/logo.png" alt="Plus logo" mr={4}/>
+                        <Image src={"/images/logo.png"} alt="Plus logo" mr={4}/>
 
                         <HStack >
                             {path === "/dashboard" 
@@ -57,6 +58,7 @@ export function DesktopMenu({userName, userEmail, path}: IDesktopMenu){
                                     <Avatar
                                         borderRadius='full'
                                         boxSize='80px'
+                                        src={userPhotoUrl}
                                         name={userName}
                                     />
                                 </ChakraLink>

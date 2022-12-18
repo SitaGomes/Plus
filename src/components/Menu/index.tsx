@@ -24,16 +24,18 @@ export function Menu(){
 
     if(isMobileView) {
         return <MobileMenu 
-                    userName={user.name ? user.name : "user"} 
-                    userEmail={user.email ? user.email : "email"}
-                    path={path}
-                />
+            userName={user.name ? user.name : "user"} 
+            userEmail={user.email ? user.email : "email"}
+            userPhotoUrl={user.photo_url ? user.photo_url : ""}
+            path={path}
+        />
     }
 
     return <DesktopMenu 
-                userName={user.name ? user.name : "user"} 
-                userEmail={user.email ? user.email : "email"}
-                path={path}
-            />
+        userName={user.name ? user.name : "user"} 
+        userEmail={user.email ? user.email : "email"}
+        userPhotoUrl={user.photo_url ? user.photo_url : ""}
+        path={path}
+    />
     
 }
