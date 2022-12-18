@@ -18,15 +18,15 @@ export function TransactionCard({...rest}: ITransactionCard) {
     useEffect(() => {
 
         setRevenue(transactions.reduce((sum, transaction) => {
-            if(transaction.type === 'revenue'){
-                return sum + transaction.value
+            if(transaction.type === 'receita'){
+                return sum + transaction.price
             }
             return sum += 0
         }, 0))
 
         setDeposit(transactions.reduce((sum, transaction) => {
-            if(transaction.type === 'deposit'){
-                return sum + transaction.value
+            if(transaction.type === 'despesa'){
+                return sum + transaction.price
             }
             return sum += 0
         }, 0))
