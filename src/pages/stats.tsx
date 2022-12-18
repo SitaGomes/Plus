@@ -1,10 +1,11 @@
-import { NextPage } from "next";
+import { GetServerSidePropsContext, NextPage } from "next";
 import Head from "next/head";
 
 import { Menu } from "../components/Menu";
 import { Box, Container, Flex } from "@chakra-ui/react";
 import { ChartBar } from "../components/Charts/ChartBar";
 import { ChartDoughtnut } from "../components/Charts/ChartDoughtnut";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
 
 const Stats: NextPage = () => {
@@ -51,3 +52,39 @@ const Stats: NextPage = () => {
 
 
 export default Stats
+
+export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
+    // Create authenticated Supabase Client
+    const supabase = createServerSupabaseClient(ctx)
+    // Check if we have a session
+    const {
+      data: { session },
+    } = await supabase.auth.getSession()
+
+  
+    if (!session)
+      return {
+        redirect: {
+          destination: '/',
+          permanent: false,
+        },
+      }
+  
+    // Run queries with RLS on the server
+    const { data } = await supabase
+        .from('users')
+        .select('name, email, photo_url')
+        .eq("id", session.user.id)
+  
+    return {
+      props: {
+        initialSession: session,
+        userData: {
+            id: session.user.id,
+            name: data?.[0].name,
+            email: data?.[0].email,
+            photo_url: data?.[0].photo_url,
+        },
+      },
+    }
+}

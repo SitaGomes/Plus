@@ -3,11 +3,7 @@ import NextLink from "next/link";
 import Head from 'next/head'
 import Router from "next/router";
 
-import { useSession, useSupabaseClient, useUser } from '@supabase/auth-helpers-react'
-import { useEffect, useState } from "react";
-
-import { signInWithEmailAndPassword } from "firebase/auth";
-import {auth} from "../utils/firebase"
+import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -67,7 +63,7 @@ const SingIn: NextPage = () => {
 
             const {data: fecthData, error} = await supabase
                 .from("users")
-                .select("name, email, photo_url")
+                .select("name, email, photo_url, isactive")
                 .eq("id", data.user.id)
             
             if(error) {
@@ -83,7 +79,21 @@ const SingIn: NextPage = () => {
                 });
     
                 return
-            }                
+            }          
+            
+            if(!fecthData?.[0].isactive) {
+                toast.error("Esta conta foi deletada", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+                return
+            }
 
             handleSetUser({
                 id: data.user.id,
@@ -92,7 +102,6 @@ const SingIn: NextPage = () => {
                 photo_url: fecthData?.[0].photo_url
             })
         }
-
 
         toast.success("Login feito com sucesso!", {
             position: "top-right",
