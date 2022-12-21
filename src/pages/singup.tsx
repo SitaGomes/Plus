@@ -98,7 +98,7 @@ const SingUp: NextPage = () => {
     return(
         <>
             <Head>
-                <title>Plus | Sing up</title>
+                <title>Plus - Inscrever</title>
                 <meta name="Plus" content="Adicionando lucro a sua vida" />
 
                 {/* Favicon */}

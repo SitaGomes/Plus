@@ -36,7 +36,7 @@ const Stats: NextPage = () => {
   return (
     <>
       <Head>
-          <title>Plus | Estatistica</title>
+          <title>Plus - Estatistica</title>
           <meta name="Plus" content="Melhore seu gerenciamento financeiro" />
 
           {/* Favicon */}

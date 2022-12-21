@@ -1,4 +1,4 @@
-import type { GetServerSideProps, GetServerSidePropsContext, NextPage } from 'next'
+import type { GetServerSidePropsContext, NextPage } from 'next'
 import Head from 'next/head'
 
 //* Components
@@ -10,12 +10,12 @@ import { TransactionHistory } from '../components/TransactionHistory'
 import { createServerSupabaseClient } from '@supabase/auth-helpers-nextjs'
 
 
-const Dashboard: NextPage = () => {
+const Home: NextPage = () => {
 
   return (
     <>
       <Head>
-        <title>Plus | Dashboard</title>
+        <title>Plus - Home</title>
         <meta name="Plus" content="Melhore seu gerenciamento financeiro" />
 
         {/* Favicon */}
@@ -50,7 +50,7 @@ const Dashboard: NextPage = () => {
   )
 }
 
-export default Dashboard
+export default Home
 
 export const getServerSideProps = async (ctx: GetServerSidePropsContext) => {
   // Create authenticated Supabase Client
