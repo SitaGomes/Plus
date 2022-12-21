@@ -259,7 +259,7 @@ const UserPage: NextPage<IUserPage> = ({userData}: IUserPage) => {
     return(
         <>
             <Head>
-                <title>Plus | Usuário</title>
+                <title>Plus - Usuário</title>
                 <meta name="Plus" content="Melhore seu gerenciamento financeiro" />
 
                 {/* Favicon */}
