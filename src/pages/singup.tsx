@@ -122,10 +122,10 @@ const SingUp: NextPage = () => {
                 theme="light"
             />
 
-            <HStack justify="space-between" bgColor="brand.white-900" h="100vh">
+            <HStack justify="space-between" bgColor="brand.white-900" h="100vh" p={5}>
                 <Container 
                     borderRadius="20px"
-                    boxShadow="lg"
+                    boxShadow={["none", "lg"]}
                     py={5}
                 >
                     <VStack
