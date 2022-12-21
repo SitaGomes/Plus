@@ -25,7 +25,7 @@ export function ChartBar() {
         plugins: {
             title: {
             display: true,
-            text: 'Receita e Despesa',
+            text: 'Receita vs Despesa',
             },
         },
         responsive: true,
@@ -51,13 +51,13 @@ export function ChartBar() {
         datasets: [
           {
             label: 'Receita',
-            data: [1, 2, 3, 4, 5, 6, 7,],
+            data: [800, 1000, 1165, 1380, 1600, 1710, 1801,  2001, 2001, 2200, 2300, 2450],
             backgroundColor: '#2CDA9D',
             stack: 'Stack 0',
           },
           {
             label: 'Despesa',
-            data: [-1, -2, -3, -4, -5, -6, -7],
+            data: [2200, 2000, 1835, 1620, 1400, 1290, 1199, 999, 999, 800, 700, 650],
             backgroundColor: '#EE6C4D',
             stack: 'Stack 1',
           },

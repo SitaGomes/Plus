@@ -3,7 +3,7 @@ import { useTransaction } from "../../hooks/useTransaction";
 
 import {v4} from "uuid"
 
-import { Input } from "../SingIn/Input";
+import { Input } from "../Input";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -65,7 +65,7 @@ export function TransactionTable({deposit}: TransactionTable) {
                     {...register("anotation")}
                     variant='filled'
                     placeholder='Anatação'
-                    name="reminder"
+                    name="anotation"
                     error={errors.anotation}
                 />
 
@@ -75,7 +75,7 @@ export function TransactionTable({deposit}: TransactionTable) {
                         variant='filled'
                         type="number"
                         placeholder='Valor R$' 
-                        name="value"
+                        name="price"
                         error={errors.price}
                     />
                 </InputGroup>
@@ -87,7 +87,8 @@ export function TransactionTable({deposit}: TransactionTable) {
                             <Select variant='filled' {...register("category")} >
                                 <option value=''>Selecione uma categoria...</option>
                                 <option value='casa'>Casa</option>
-                                <option value='conta'>Conta</option>
+                                <option value='lanches'>Lanches</option>
+                                <option value='saidas'>Saidas</option>
                             </Select>
 
                             {!!errors.category && (
@@ -101,6 +102,8 @@ export function TransactionTable({deposit}: TransactionTable) {
                             <Select variant='filled' {...register("category")} >
                                 <option value=''>Selecione uma categoria...</option>
                                 <option value='salario'>Salario</option>
+                                <option value='freelance'>Freelance</option>
+                                <option value='negocio'>Negócio</option>
                             </Select>
 
                             {!!errors.category && (

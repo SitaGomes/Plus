@@ -1,4 +1,4 @@
-import { AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Avatar, Box, Button, Container, Flex, Table, TableContainer, Tbody, Td, Text, Th, Thead, Tr, useDisclosure, VStack } from "@chakra-ui/react";
+import { AlertDialog, AlertDialogBody, AlertDialogCloseButton, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, AlertDialogOverlay, Avatar, Button, Container, useDisclosure, VStack } from "@chakra-ui/react";
 import { GetServerSidePropsContext, NextPage } from "next";
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
@@ -8,16 +8,15 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
 import { toast, ToastContainer } from "react-toastify";
-import {AiFillPlusCircle, AiFillDelete, AiFillEdit} from "react-icons/ai"
 
-import { IUser } from "../context/authContext";
 import { Menu } from "../components/Menu";
-import { Input } from "../components/SingIn/Input";
+import { Input } from "../components/Input";
 
 import * as yup from "yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Router from "next/router";
+import { CategoryTable } from "../components/Categories";
 
 interface IUserPage {
     userData: {
@@ -42,14 +41,14 @@ const updatesSchema = yup.object().shape({
 const UserPage: NextPage<IUserPage> = ({userData}: IUserPage) => {
  
     const supabase = useSupabaseClient()
-    const [hydrated, setHydrated] = useState(false)
     const {handleSetUser, user} = useLocalAuth()
-
+    
     const { isOpen, onOpen, onClose } = useDisclosure()
     const cancelRef = useRef(null)
-
-    const {register, handleSubmit, formState, resetField} = useForm<IUpdate>({resolver: yupResolver(updatesSchema)})
-
+    
+    const {register, handleSubmit, resetField} = useForm<IUpdate>({resolver: yupResolver(updatesSchema)})
+    
+    const [hydrated, setHydrated] = useState(false)
     useEffect(() => {
         setHydrated(true)
     }, [setHydrated])
@@ -340,88 +339,9 @@ const UserPage: NextPage<IUserPage> = ({userData}: IUserPage) => {
                 </VStack>
 
 
-                <Box w="100%" mb={10}>
-
-                    <Flex justifyContent="space-between" alignItems="center">
-                        <Text fontSize="lg" fontWeight="bold">
-                            Categorias de Despesa
-                        </Text>
-                        <Button bg="transparent">
-                            <AiFillPlusCircle size="30px"/>
-                        </Button>
-                    </Flex>
-                    <TableContainer bgColor="brand.white-900" borderRadius="20px" p={3}>
-                        <Table variant='simple' size="lg" >
-                            <Thead>
-                                <Tr>
-                                    <Th>Nome</Th>
-                                    <Th></Th>
-                                    <Th></Th>
-                                </Tr>
-                            </Thead>
-                            <Tbody>
-
-                                <Tr>
-                                    <Td>Conta de luz</Td>
-                                    <Td>
-                                        <Button bg="transparent">
-                                            <AiFillEdit size="20px"/>
-                                        </Button>
-                                    </Td>
-                                    <Td>
-                                        <Button bg="transparent">
-                                            <AiFillDelete size="20px"/>
-                                        </Button>
-                                    </Td>
-                                </Tr>
-                                        
-                            </Tbody>
-                        </Table>
-                    </TableContainer>
-
-                </Box>
-
-
-                <Box w="100%">
-
-                    <Flex justifyContent="space-between" alignItems="center">
-                        <Text fontSize="lg" fontWeight="bold">
-                            Categorias de Receita
-                        </Text>
-                        <Button bg="transparent">
-                            <AiFillPlusCircle size="30px"/>
-                        </Button>
-                    </Flex>
-                    <TableContainer bgColor="brand.white-900" borderRadius="20px" p={3}>
-                        <Table variant='simple' size="lg" >
-                            <Thead>
-                                <Tr>
-                                    <Th>Nome</Th>
-                                    <Th></Th>
-                                    <Th></Th>
-                                </Tr>
-                            </Thead>
-                            <Tbody>
-
-                                <Tr>
-                                    <Td>Conta de luz</Td>
-                                    <Td>
-                                        <Button bg="transparent">
-                                            <AiFillEdit size="20px"/>
-                                        </Button>
-                                    </Td>
-                                    <Td>
-                                        <Button bg="transparent">
-                                            <AiFillDelete size="20px"/>
-                                        </Button>
-                                    </Td>
-                                </Tr>
-                                        
-                            </Tbody>
-                        </Table>
-                    </TableContainer>
-
-                </Box>
+               <CategoryTable title="despesa" isExpense />
+               
+               <CategoryTable title="receita" />                
 
                 <Button w="100%" mt={20} mb={5} onClick={onOpen} colorScheme="red">Deletar a conta</Button>
 

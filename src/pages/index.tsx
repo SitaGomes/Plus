@@ -3,7 +3,7 @@ import NextLink from "next/link";
 import Head from 'next/head'
 import Router from "next/router";
 
-import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
 
 import { ToastContainer, toast } from 'react-toastify';
 
@@ -12,7 +12,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 
 import {  Button, Container, Link, HStack, Image, Text, useBreakpointValue, VStack, } from "@chakra-ui/react";
-import { Input } from "../components/SingIn/Input";
+import { Input } from "../components/Input";
 import { useLocalAuth } from "../hooks/useLocalAuth";
 
 
@@ -29,13 +29,11 @@ const singInSchema = yup.object().shape({
 
 const SingIn: NextPage = () => {
 
-    const session = useSession()
     const supabase = useSupabaseClient()
 
     const {handleSetUser} = useLocalAuth()
 
-    const {register, handleSubmit, formState} = useForm<ISingIn>({resolver: yupResolver(singInSchema)})
-    const {errors} = formState
+    const {register, handleSubmit, formState: {errors}} = useForm<ISingIn>({resolver: yupResolver(singInSchema)})
 
     const handleEmailSingIn: SubmitHandler<ISingIn> = async ({email, password}) => {
     
