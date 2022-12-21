@@ -150,10 +150,14 @@ const SingIn: NextPage = () => {
                 theme="light"
             />
 
-            <HStack justify="space-between" bgColor="brand.white-900" h="100vh">
-                <Container>
+            <HStack justify="space-between" bgColor="brand.white-900" h="100vh" p={5}>
+                <Container
+                    borderRadius="20px"
+                    boxShadow={["none","lg"]}
+                    py={5}
+                >
                     <VStack h="100%" color="brand.black-700" justify="center">
-                        <Image src="/images/Logo_Slogan.png" alt="Plus - Adicionando lucro a sua vida" />
+                        <Image src="/images/Logo_Slogan.png" alt="Plus - Gestão financeira simplificada" />
                         <Text fontWeight="medium" fontSize="lg" py={6}>
                             Entre na sua conta PLUS:
                         </Text>
@@ -193,7 +197,6 @@ const SingIn: NextPage = () => {
                     </VStack>
                 </Container>
 
-                {!isMobileView && <Image flex="1" h="100%" src="/images/Banner.png" alt="Adicione lucro a sua vida" />}
             </HStack>
 
         </>
