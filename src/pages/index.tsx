@@ -1,9 +1,11 @@
 import { Box, Button, Container, Flex, Heading, Icon, Image, Text } from "@chakra-ui/react"
 import { NextPage } from "next"
 import Head from "next/head"
-import {BsShieldLockFill, BsTwitter} from "react-icons/bs"
+import Link from "next/link";
 
 import {AiFillInstagram, AiFillYoutube} from "react-icons/ai"
+import {BsShieldLockFill, BsTwitter} from "react-icons/bs"
+import { ColoredButton } from "../components/LandinPage/ColoredButton"
 
 
 const LandingPage: NextPage = () => {
@@ -37,26 +39,21 @@ const LandingPage: NextPage = () => {
 
 
                     <Flex gap={5}>
-                        <Button
-                            bg="transparent"
-                            color="brand.white-900"
-                            transition="200ms ease-in-out"
-                            _hover={{bg: "brand.green-500"}}
-                        >
-                            Entrar
-                        </Button>
+                        <Link href={"/singin"}>
+                            <Button
+                                bg="transparent"
+                                color="brand.white-900"
+                                transition="200ms ease-in-out"
+                                _hover={{bg: "brand.green-500"}}
+                            >
+                                Entrar
+                            </Button>
+                        </Link>
 
 
-                        <Button
-                            bgGradient='linear(to-r,
-                            brand.green-500,
-                            brand.orange-500)'
-                            color="brand.white-900"
-                            transition="200ms ease-in-out"
-                            _hover={{bgGradient: "linear(to-r, #20AB7A, #AF503A)"}}
-                        >
+                        <ColoredButton href="/singup">
                             Inscrever-se
-                        </Button>
+                        </ColoredButton>
                     </Flex>
                 </Flex>
             </Container>
@@ -87,17 +84,9 @@ const LandingPage: NextPage = () => {
                     <Text maxW={"400px"}>
                         Acompanhe seu fluxo de caixa sem esforço em uma plataforma amigável para gerenciar suas finanças.
                     </Text>
-                    <Button
-                        bgGradient='linear(to-r,
-                        brand.green-500,
-                        brand.orange-500)'
-                        color="brand.white-900"
-                        _hover={{bgGradient: "linear(to-r, #20AB7A, #AF503A)"}}
-                        w="100%"
-                        transition="200ms ease-in-out"
-                    >
+                    <ColoredButton href="/singup">
                         Inscrever-se
-                    </Button>
+                    </ColoredButton>
 
                 </Flex>
 
@@ -130,17 +119,9 @@ const LandingPage: NextPage = () => {
                                 <Text maxW={"400px"}>
                                     Acesse sua conta pelo computador, tablet ou telefone, graças a interface simples e responsiva.
                                 </Text>
-                                <Button
-                                    bgGradient='linear(to-r,
-                                    brand.green-500,
-                                    brand.orange-500)'
-                                    color="brand.white-900"
-                                    _hover={{bgGradient: "linear(to-r, #20AB7A, #AF503A)"}}
-                                    w="100%"
-                                    transition="200ms ease-in-out"
-                                >
-                                    Inscrever-se
-                                </Button>
+                                <ColoredButton href="/singup">
+                                    Inscreva-se
+                                </ColoredButton>
                             </Flex>
                             <Image src="/images/Iphone.svg" alt="iphone"/>
                         </Flex>
@@ -160,17 +141,9 @@ const LandingPage: NextPage = () => {
                                 <Text maxW={"400px"}>
                                     Crie categorias ilimitadas para acompanhar o que realmente importa para você.
                                 </Text>
-                                <Button
-                                    bgGradient='linear(to-r,
-                                    brand.green-500,
-                                    brand.orange-500)'
-                                    color="brand.white-900"
-                                    transition="200ms ease-in-out"
-                                    _hover={{bgGradient: "linear(to-r, #20AB7A, #AF503A)"}}
-                                    w="100%"
-                                >
+                                <ColoredButton href="/singup">
                                     Crie seu orçamento
-                                </Button>
+                                </ColoredButton>
                             </Flex>
                             <Image src="/images/Laptop.svg" alt="iphone"/>
                         </Flex>
@@ -189,17 +162,9 @@ const LandingPage: NextPage = () => {
                                 <Text maxW={"400px"}>
                                     Coloridos (gráficos e tabelas) que tornam divertido ficar obsecado com o seu progresso.
                                 </Text>
-                                <Button
-                                    bgGradient='linear(to-r,
-                                    brand.green-500,
-                                    brand.orange-500)'
-                                    color="brand.white-900"
-                                    _hover={{bgGradient: "linear(to-r, #20AB7A, #AF503A)"}}
-                                    w="100%"
-                                    transition="200ms ease-in-out"
-                                >
+                                <ColoredButton href="/singup">
                                     Comece sua evolução
-                                </Button>
+                                </ColoredButton>
                             </Flex>
                             <Image src="/images/Laptop-graph.svg" alt="iphone"/>
                         </Flex>      
@@ -244,18 +209,9 @@ const LandingPage: NextPage = () => {
                         Comece a economizar e gastar com confiança e clareza.
                     </Heading>
                     <Image src="/images/Devices.svg" alt="all devices"/>
-                    <Button
-                        mt={10}
-                        bgGradient='linear(to-r,
-                        brand.green-500,
-                        brand.orange-500)'
-                        color="brand.white-900"
-                        _hover={{bgGradient: "linear(to-r, #20AB7A, #AF503A)"}}
-                        w={["100%", "100%", "200px"]}
-                        transition="200ms ease-in-out"
-                    >
+                    <ColoredButton href="/singup">
                         Comece sua jornada
-                    </Button>
+                    </ColoredButton>
                 </Container>
 
                 <Flex

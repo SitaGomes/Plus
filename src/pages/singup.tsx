@@ -123,7 +123,11 @@ const SingUp: NextPage = () => {
             />
 
             <HStack justify="space-between" bgColor="brand.white-900" h="100vh">
-                <Container >
+                <Container 
+                    borderRadius="20px"
+                    boxShadow="lg"
+                    py={5}
+                >
                     <VStack
                       h="100%"
                       color="brand.black-700"
@@ -178,7 +182,7 @@ const SingUp: NextPage = () => {
                         </VStack>
 
 
-                        <NextLink href="/">
+                        <NextLink href="/singin">
                             <Link color="brand.orange-500" fontSize="sm">
                                 Ja tem uma conta? Entre em sua conta.
                             </Link>
@@ -187,9 +191,6 @@ const SingUp: NextPage = () => {
                     </VStack>
                 </Container>
 
-                {!isMobileView && (
-                    <Image flex="1" h="100%" src="/images/Banner.png" alt="Adicione lucro a sua vida" />
-                )}
             </HStack>
 
         </>
