@@ -12,7 +12,7 @@ import * as yup from "yup";
 
 import { Button, Container, Link, HStack, Image, Text, useBreakpointValue, VStack, } from "@chakra-ui/react";
 
-import { Input } from "../components/SingIn/Input";
+import { Input } from "../components/Input";
 
 interface ISingUp {
     name: string,

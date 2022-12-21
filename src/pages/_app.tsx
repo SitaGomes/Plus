@@ -6,6 +6,7 @@ import { theme } from '../styles/theme'
 
 import {AuthProvider} from "../context/authContext"
 import {TransactionProvider} from "../context/transactionContext"
+import { CategoryProvider } from '../context/categoryContext'
 
 import { createBrowserSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider } from '@supabase/auth-helpers-react'
@@ -21,15 +22,17 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     <SessionContextProvider supabaseClient={supabase} initialSession={pageProps.initialSession}>
 
       
-        <ChakraProvider theme={theme}>
-          <AuthProvider>
-            <TransactionProvider>
+      <ChakraProvider theme={theme}>
+        <AuthProvider>
+          <TransactionProvider>
+            <CategoryProvider>
 
               <Component {...pageProps} />
 
-            </TransactionProvider>
-          </AuthProvider>
-        </ChakraProvider>
+            </CategoryProvider>
+          </TransactionProvider>
+        </AuthProvider>
+      </ChakraProvider>
       
 
     </SessionContextProvider>
